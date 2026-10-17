@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <!-- Meta SEO -->
+  
+    <meta name="description" content="After seeing Heroku announce their change on recommending Puma over Unicorn, I decided to w...">
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Puma and Unicorn - Fiddling with both servers | Tiago Padrela Amaro</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Puma and Unicorn - Fiddling with both servers" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="After seeing Heroku announce their change on recommending Puma over Unicorn, I decided to write about my past experiences with both servers, their configuration and maintenance process." />
+<meta property="og:description" content="After seeing Heroku announce their change on recommending Puma over Unicorn, I decided to write about my past experiences with both servers, their configuration and maintenance process." />
+<link rel="canonical" href="https://tiagoamaro.com.br/2015/02/01/puma-and-unicorn/" />
+<meta property="og:url" content="https://tiagoamaro.com.br/2015/02/01/puma-and-unicorn/" />
+<meta property="og:site_name" content="Tiago Padrela Amaro" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-02-01T00:00:00-02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Puma and Unicorn - Fiddling with both servers" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2015-02-01T00:00:00-02:00","datePublished":"2015-02-01T00:00:00-02:00","description":"After seeing Heroku announce their change on recommending Puma over Unicorn, I decided to write about my past experiences with both servers, their configuration and maintenance process.","headline":"Puma and Unicorn - Fiddling with both servers","mainEntityOfPage":{"@type":"WebPage","@id":"https://tiagoamaro.com.br/2015/02/01/puma-and-unicorn/"},"url":"https://tiagoamaro.com.br/2015/02/01/puma-and-unicorn/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- Google Site Verification -->
+  <meta name="google-site-verification" content="R0IzQeYRkG8i9_d7_jq546RZ589H33qJwAs8X_EH23M" />
+
+  <!-- CSS -->
+  <!-- Orders the `legacy` cascade layer between Tailwind's `base` (Preflight)
+       and `components`/`utilities`: legacy still loses to Tailwind utility
+       classes regardless of selector specificity, but still beats Preflight's
+       resets for pages not yet migrated to Tailwind. -->
+  <style type="text/css">@layer theme, base, legacy, components, utilities;</style>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Berkshire+Swash"/>
+  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css"/>
+  <link rel="stylesheet" type="text/css" href="/public/js/emfed/toots.css"/>
+
+  <!-- Thank you so much to Garth Braithwaite (http://garthdb.com/writings/i-am-a-jekyll-god/) -->
+  <style type="text/css">
+    
+    @layer legacy {
+      .highlight .hll{background-color:#ffc}.highlight .c{color:#999}.highlight .err{color:#a00;background-color:#faa}.highlight .k{color:#069}.highlight .o{color:#555}.highlight .cm{color:#09f;font-style:italic}.highlight .cp{color:#099}.highlight .c1{color:#999}.highlight .cs{color:#999}.highlight .gd{background-color:#fcc;border:1px solid #c00}.highlight .ge{font-style:italic}.highlight .gr{color:red}.highlight .gh{color:#030}.highlight .gi{background-color:#cfc;border:1px solid #0c0}.highlight .go{color:#aaa}.highlight .gp{color:#009}.highlight .gu{color:#030}.highlight .gt{color:#9c6}.highlight .kc{color:#069}.highlight .kd{color:#069}.highlight .kn{color:#069}.highlight .kp{color:#069}.highlight .kr{color:#069}.highlight .kt{color:#078}.highlight .m{color:#f60}.highlight .s{color:#d44950}.highlight .na{color:#4f9fcf}.highlight .nb{color:#366}.highlight .nc{color:#0a8}.highlight .no{color:#360}.highlight .nd{color:#99f}.highlight .ni{color:#999}.highlight .ne{color:#c00}.highlight .nf{color:#c0f}.highlight .nl{color:#99f}.highlight .nn{color:#0cf}.highlight .nt{color:#2f6f9f}.highlight .nv{color:#033}.highlight .ow{color:#000}.highlight .w{color:#bbb}.highlight .mf{color:#f60}.highlight .mh{color:#f60}.highlight .mi{color:#f60}.highlight .mo{color:#f60}.highlight .sb{color:#c30}.highlight .sc{color:#c30}.highlight .sd{color:#c30;font-style:italic}.highlight .s2{color:#c30}.highlight .se{color:#c30}.highlight .sh{color:#c30}.highlight .si{color:#a00}.highlight .sx{color:#c30}.highlight .sr{color:#3aa}.highlight .s1{color:#c30}.highlight .ss{color:#fc3}.highlight .bp{color:#366}.highlight .vc{color:#033}.highlight .vg{color:#033}.highlight .vi{color:#033}.highlight .il{color:#f60}.css .o,.css .o+.nt,.css .nt+.nt{color:#999}
+    }
+  </style>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/favicons/touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicons/favicon.png">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+    <div class="sidebar bg-teal-800 px-4 py-8 text-center text-amber-50 md:fixed md:inset-y-0 md:left-0 md:w-72 md:text-left">
+  <div class="mx-auto max-w-xl px-4 md:absolute md:inset-4">
+    <div>
+      <h1 class="mt-0 font-brand text-5xl font-normal text-white">Tiago Padrela Amaro</h1>
+      <p class="text-xl font-light">Geek and coder</p>
+    </div>
+
+    <nav class="sidebar-nav mb-4 hidden md:block">
+      
+
+      
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/">About</a>
+          
+        
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/mastodon/">Mastodon</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/posts/">Posts</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/quotes/">Quotes</a>
+          
+        
+      
+        
+      
+    </nav>
+
+    <p class="sidebar-copyright hidden md:block">
+      <small>
+        &copy; 2026. Built with <a class="text-amber-50 hover:text-amber-400" href="http://jekyllrb.com/" target="_blank">Jekyll</a>. Hosted with <span class="fa fa-heart-o"></span> on <a class="text-amber-50 hover:text-amber-400" href="http://pages.github.com/" target="_blank">Github Pages</a>.
+      </small>
+    </p>
+
+    <a id="easter_egg" href="https://en.wikipedia.org/wiki/Doom_(1993_video_game)" class="hidden h-8 w-7" style="background-image: url(/public/images/doom_marine.gif);"></a>
+
+    <div class="mobile-menu-arrow mx-auto hidden h-4 w-4 rotate-45 cursor-pointer border-r-2 border-b-2 border-white max-md:block"></div>
+  </div>
+</div>
+
+
+    <div class="content mx-auto max-w-full px-4 pt-16 pb-16 md:mr-8 md:ml-80 lg:mr-16 lg:ml-88">
+      <div class="mb-16">
+  <h1 class="mt-0 text-neutral-800">Puma and Unicorn - Fiddling with both servers</h1>
+
+  <span class="-mt-2 mb-4 block text-neutral-400">01 Feb 2015</span>
+
+  <div class="-mt-2.5 mb-2.5 text-sm" title="Estimated read time">
+  Reading time:
+
+  
+  
+    5 mins
+  
+</div>
+
+
+  <p>After seeing <a href="https://devcenter.heroku.com/changelog-items/594">Heroku announce their change on recommending Puma over Unicorn</a>, I decided to write about my past experiences with both servers, their configuration and maintenance process.</p>
+
+<p>In this post I’ll talk about my experiences (and hard times) configuring Unicorn, and how was easy to setup Puma server instead of using my old Unicorn configurations.</p>
+
+<h2 id="unicorn-and-rainbows">Unicorn (and Rainbows)</h2>
+
+<p>Unicorn denominates itself as a “server for fast clients”. If you don’t know what are the differences between slow/fast clients, read this small <a href="http://stackoverflow.com/questions/7487868/what-does-unicorn-consider-to-be-fast-and-slow-requests#answer-7490035">StackOverflow answer</a>. This answer is old, but it remains updated with the Unicorn reality, and the differences about the Rainbows implementation.</p>
+
+<h3 id="configuration">Configuration</h3>
+
+<p>So, Unicorn is great, <a href="https://github.com/blog/517-unicorn">Github use this since 2009</a>, and if I have many long pooling requests on my application I’ll use Rainbows. Ok, so let’s get this server to work.</p>
+
+<p>There were times where configuring Unicorn was hard, and there was no Capistrano recipes for you to fiddle. That scenario changed and now we have the <a href="https://github.com/capistrano-plugins/capistrano-unicorn-nginx">capistrano-unicorn-nginx</a>, a gem that use Capistrano to configure Nginx and Unicorn on your server, and <em>voilà</em>! You have a working configuration on your remote server. This project provides you some templates that ease up the “search and experiment” process for configuring your server.</p>
+
+<blockquote>
+  <p>This gem is rather new (first commit on 29 Mar 2014), so before that, you would need to search the internet and the <a href="http://unicorn.bogomips.org/">not so great on UI Unicorn docs</a> to understand what was happening. The Unicorn docs are ugly, but it is very resourceful!</p>
+</blockquote>
+
+<p>If you don’t like the default templates given by the <code class="language-plaintext highlighter-rouge">capistrano-unicorn-nginx</code> gem, the folks that develop GitLab have a <a href="https://github.com/gitlabhq/gitlabhq/blob/c47328948b5fff218c68279260a57ab6b03e7423/config/unicorn.rb.example">great commented Unicorn configuration file named <code class="language-plaintext highlighter-rouge">unicorn.rb.example</code></a>. Its source code is very well documented, you’ll understand which configurations you should customize to better tune your server.</p>
+
+<blockquote>
+  <p>Note: Rainbows uses exactly the same configurations and signals as the Unicorn server, so you should not worry about configuration rewriting.</p>
+</blockquote>
+
+<h4 id="upstart">Upstart</h4>
+
+<p>One challenge I had on a server, was that Unicorn was eating too much memory and shutting itself down. When I searched about the problem, I was amazed to see that it is a <a href="https://www.digitalocean.com/community/tutorials/how-to-optimize-unicorn-workers-in-a-ruby-on-rails-app">very common problem with Unicorn</a>, and there is even a gem to <a href="https://github.com/kzk/unicorn-worker-killer">handle its workers memory hunger. Enter <code class="language-plaintext highlighter-rouge">unicorn-worker-killer</code>!</a></p>
+
+<p>To solve my problems, I searched an Upstart script to keep my Unicorn server alive, even if the <code class="language-plaintext highlighter-rouge">unicorn-worker-killer</code> strategy didn’t work out. I now had (yet!) another problem: finding a reliable Upstart script for unicorn. There are several out there, and I experimented with all of them. In the end, if you try them out, you’ll get one that work out for you:</p>
+
+<ul>
+  <li><a href="https://gist.github.com/nebirhos/bc6c374cdee98b84bc65">https://gist.github.com/nebirhos/bc6c374cdee98b84bc65</a></li>
+  <li><a href="https://gist.github.com/errordeveloper/4329034">https://gist.github.com/errordeveloper/4329034</a></li>
+</ul>
+
+<h2 id="puma-enter-the-speed">Puma (enter the speed)</h2>
+
+<p>Puma is a server for Rack apps that is “Built for Speed &amp; Concurrency”. They handle <a href="https://github.com/puma/puma#built-for-speed--concurrency">concurrency</a>, <a href="https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#slow-clients">slow clients</a> and is way less memory hungry than Unicorn/Rainbows.</p>
+
+<h3 id="configuration-1">Configuration</h3>
+
+<p>Puma configuration is rather easier than the Unicorn. There are resources on the <a href="https://github.com/puma/puma#configuration">official repository</a> and also a complete <a href="https://github.com/seuros/capistrano-puma">Capistrano + Unicorn solution (<code class="language-plaintext highlighter-rouge">capistrano-puma</code>)</a>.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">capistrano-puma</code> gem offers the same solutions as the <code class="language-plaintext highlighter-rouge">capistrano-unicorn-nginx</code> project, so you can manage to quickly serve a running configuration with a few <code class="language-plaintext highlighter-rouge">cap</code> commands.</p>
+
+<h4 id="upstart-1">Upstart</h4>
+
+<p>Puma have its own solution for <code class="language-plaintext highlighter-rouge">init.d</code> and Upstart solution. They call it <a href="https://github.com/puma/puma/tree/master/tools/jungle">Jungle</a> and they are maintained by the Puma developers.</p>
+
+<h1 id="conclusions">Conclusions</h1>
+
+<p>If you are starting a new project and want to ease up the server configuration process, go with Puma. With my past experience (and traumas), having a modern server that is easy to configure is really the way to go if you don’t want headaches.</p>
+
+<blockquote>
+  <p>PS: I’m trying to get time to replace Unicorn for Puma in some of my work projects. When (or if) I do that, I’ll post the results here.</p>
+</blockquote>
+
+<h2 id="update---results-13022015">Update - Results (13/02/2015)</h2>
+
+<p>I’ve replaced successfully one of the projects from my work, using the Puma related gems described in this post. The transition was made following these steps:</p>
+
+<ol>
+  <li>Changing Capistrano recipes (using the <code class="language-plaintext highlighter-rouge">capistrano-puma</code> gem)</li>
+  <li>Updating upstart scripts</li>
+  <li>Choosing Puma strategy (workers or multi-threaded. I chose multi-workers with phased-restart strategy, for real zero downtime and no request hangs)</li>
+</ol>
+
+<p>With these three simple steps, I was able to replace a buggy Unicorn upstart script and an unfriendly configuration environment for the production machines, easing up my future job on scaling horizontally this project.</p>
+
+<p>I’ve only found a caveat on the default puma configuration: configuring a zero minimum threads for the Puma workers was causing Puma threads to open many connections to my database and not closing them. The solution was setting the min threads and max threads to the same value, as describe on the <a href="https://github.com/codetriage/codetriage/blob/ebd5c8f3667626e91cf2594a0e840e12507bf109/config/puma.rb">Puma configuration file example</a> <a href="https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#sample-code">referenced on the Heroku article</a></p>
+
+<p>Currently, my puma configuration is like this:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">directory</span> <span class="s1">'/sample_folder/current'</span>
+<span class="n">rackup</span> <span class="s2">"/sample_folder/current/config.ru"</span>
+<span class="n">environment</span> <span class="s1">'production'</span>
+
+<span class="n">pidfile</span> <span class="s2">"/sample_folder/shared/tmp/pids/puma.pid"</span>
+<span class="n">state_path</span> <span class="s2">"/sample_folder/shared/tmp/pids/puma.state"</span>
+<span class="n">stdout_redirect</span> <span class="s1">'/sample_folder/shared/log/puma_access.log'</span><span class="p">,</span> <span class="s1">'/sample_folder/shared/log/puma_error.log'</span><span class="p">,</span> <span class="kp">true</span>
+
+<span class="n">threads</span> <span class="mi">5</span><span class="p">,</span><span class="mi">5</span> <span class="c1"># Min-max threads set to the same value</span>
+
+<span class="n">bind</span> <span class="s1">'unix:///sample_folder/shared/tmp/sockets/puma.sock'</span>
+<span class="n">workers</span> <span class="mi">2</span> <span class="c1"># Workers strategy</span>
+
+<span class="n">preload_app!</span>
+
+<span class="n">on_worker_boot</span> <span class="k">do</span>
+  <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">establish_connection</span>
+<span class="k">end</span></code></pre></figure>
+
+
+</div>
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES.
+     *  Docs: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    /*
+    var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+
+    var disqus_config = function () {
+        this.page.identifier = "/2015/02/01/puma-and-unicorn/";
+    };
+
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//tiagoamaro.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+
+      <script src="https://npmcdn.com/cheet.js@0.3.3/cheet.min.js"></script>
+  <script src="/public/js/mobile_menu.js"></script>
+  <script src="/public/js/easter_egg.js"></script>
+  <script type="importmap">
+    { "imports": { "dompurify": "/public/js/emfed/dompurify.mjs" } }
+  </script>
+  <script type="module" src="/public/js/emfed/emfed.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <!-- Meta SEO -->
+  
+    <meta name="description" content="Since Ruby 2.3 launched its new Hash#dig and ...">
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Ruby 2.3 dig Method - Thoughts and Examples | Tiago Padrela Amaro</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Ruby 2.3 dig Method - Thoughts and Examples" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Since Ruby 2.3 launched its new Hash#dig and Array#dig feature, it got my attention on how it would help “digging” unreliable objects. This incredible method makes you safely navigate through nested objects when dealing with third party APIs." />
+<meta property="og:description" content="Since Ruby 2.3 launched its new Hash#dig and Array#dig feature, it got my attention on how it would help “digging” unreliable objects. This incredible method makes you safely navigate through nested objects when dealing with third party APIs." />
+<link rel="canonical" href="https://tiagoamaro.com.br/2016/08/27/ruby-2-3-dig/" />
+<meta property="og:url" content="https://tiagoamaro.com.br/2016/08/27/ruby-2-3-dig/" />
+<meta property="og:site_name" content="Tiago Padrela Amaro" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-08-27T00:00:00-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Ruby 2.3 dig Method - Thoughts and Examples" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2016-08-27T00:00:00-03:00","datePublished":"2016-08-27T00:00:00-03:00","description":"Since Ruby 2.3 launched its new Hash#dig and Array#dig feature, it got my attention on how it would help “digging” unreliable objects. This incredible method makes you safely navigate through nested objects when dealing with third party APIs.","headline":"Ruby 2.3 dig Method - Thoughts and Examples","mainEntityOfPage":{"@type":"WebPage","@id":"https://tiagoamaro.com.br/2016/08/27/ruby-2-3-dig/"},"url":"https://tiagoamaro.com.br/2016/08/27/ruby-2-3-dig/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- Google Site Verification -->
+  <meta name="google-site-verification" content="R0IzQeYRkG8i9_d7_jq546RZ589H33qJwAs8X_EH23M" />
+
+  <!-- CSS -->
+  <!-- Orders the `legacy` cascade layer between Tailwind's `base` (Preflight)
+       and `components`/`utilities`: legacy still loses to Tailwind utility
+       classes regardless of selector specificity, but still beats Preflight's
+       resets for pages not yet migrated to Tailwind. -->
+  <style type="text/css">@layer theme, base, legacy, components, utilities;</style>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Berkshire+Swash"/>
+  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css"/>
+  <link rel="stylesheet" type="text/css" href="/public/js/emfed/toots.css"/>
+
+  <!-- Thank you so much to Garth Braithwaite (http://garthdb.com/writings/i-am-a-jekyll-god/) -->
+  <style type="text/css">
+    
+    @layer legacy {
+      .highlight .hll{background-color:#ffc}.highlight .c{color:#999}.highlight .err{color:#a00;background-color:#faa}.highlight .k{color:#069}.highlight .o{color:#555}.highlight .cm{color:#09f;font-style:italic}.highlight .cp{color:#099}.highlight .c1{color:#999}.highlight .cs{color:#999}.highlight .gd{background-color:#fcc;border:1px solid #c00}.highlight .ge{font-style:italic}.highlight .gr{color:red}.highlight .gh{color:#030}.highlight .gi{background-color:#cfc;border:1px solid #0c0}.highlight .go{color:#aaa}.highlight .gp{color:#009}.highlight .gu{color:#030}.highlight .gt{color:#9c6}.highlight .kc{color:#069}.highlight .kd{color:#069}.highlight .kn{color:#069}.highlight .kp{color:#069}.highlight .kr{color:#069}.highlight .kt{color:#078}.highlight .m{color:#f60}.highlight .s{color:#d44950}.highlight .na{color:#4f9fcf}.highlight .nb{color:#366}.highlight .nc{color:#0a8}.highlight .no{color:#360}.highlight .nd{color:#99f}.highlight .ni{color:#999}.highlight .ne{color:#c00}.highlight .nf{color:#c0f}.highlight .nl{color:#99f}.highlight .nn{color:#0cf}.highlight .nt{color:#2f6f9f}.highlight .nv{color:#033}.highlight .ow{color:#000}.highlight .w{color:#bbb}.highlight .mf{color:#f60}.highlight .mh{color:#f60}.highlight .mi{color:#f60}.highlight .mo{color:#f60}.highlight .sb{color:#c30}.highlight .sc{color:#c30}.highlight .sd{color:#c30;font-style:italic}.highlight .s2{color:#c30}.highlight .se{color:#c30}.highlight .sh{color:#c30}.highlight .si{color:#a00}.highlight .sx{color:#c30}.highlight .sr{color:#3aa}.highlight .s1{color:#c30}.highlight .ss{color:#fc3}.highlight .bp{color:#366}.highlight .vc{color:#033}.highlight .vg{color:#033}.highlight .vi{color:#033}.highlight .il{color:#f60}.css .o,.css .o+.nt,.css .nt+.nt{color:#999}
+    }
+  </style>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/favicons/touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicons/favicon.png">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+    <div class="sidebar bg-teal-800 px-4 py-8 text-center text-amber-50 md:fixed md:inset-y-0 md:left-0 md:w-72 md:text-left">
+  <div class="mx-auto max-w-xl px-4 md:absolute md:inset-4">
+    <div>
+      <h1 class="mt-0 font-brand text-5xl font-normal text-white">Tiago Padrela Amaro</h1>
+      <p class="text-xl font-light">Geek and coder</p>
+    </div>
+
+    <nav class="sidebar-nav mb-4 hidden md:block">
+      
+
+      
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/">About</a>
+          
+        
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/mastodon/">Mastodon</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/posts/">Posts</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/quotes/">Quotes</a>
+          
+        
+      
+        
+      
+    </nav>
+
+    <p class="sidebar-copyright hidden md:block">
+      <small>
+        &copy; 2026. Built with <a class="text-amber-50 hover:text-amber-400" href="http://jekyllrb.com/" target="_blank">Jekyll</a>. Hosted with <span class="fa fa-heart-o"></span> on <a class="text-amber-50 hover:text-amber-400" href="http://pages.github.com/" target="_blank">Github Pages</a>.
+      </small>
+    </p>
+
+    <a id="easter_egg" href="https://en.wikipedia.org/wiki/Doom_(1993_video_game)" class="hidden h-8 w-7" style="background-image: url(/public/images/doom_marine.gif);"></a>
+
+    <div class="mobile-menu-arrow mx-auto hidden h-4 w-4 rotate-45 cursor-pointer border-r-2 border-b-2 border-white max-md:block"></div>
+  </div>
+</div>
+
+
+    <div class="content mx-auto max-w-full px-4 pt-16 pb-16 md:mr-8 md:ml-80 lg:mr-16 lg:ml-88">
+      <div class="mb-16">
+  <h1 class="mt-0 text-neutral-800">Ruby 2.3 dig Method - Thoughts and Examples</h1>
+
+  <span class="-mt-2 mb-4 block text-neutral-400">27 Aug 2016</span>
+
+  <div class="-mt-2.5 mb-2.5 text-sm" title="Estimated read time">
+  Reading time:
+
+  
+  
+    7 mins
+  
+</div>
+
+
+  <p>Since Ruby 2.3 launched its new <code class="language-plaintext highlighter-rouge">Hash#dig</code> and <code class="language-plaintext highlighter-rouge">Array#dig</code> feature, it got my attention on how it would help “digging” unreliable objects. This incredible method makes you safely navigate through nested objects when dealing with third party APIs.</p>
+
+<p>It also makes it makes easy to refactor projects using <code class="language-plaintext highlighter-rouge">OpenStruct</code>s structures and replace those with hashes.</p>
+
+<h2 id="what-it-is">What it is?</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">#dig</code> is basically an <a href="https://en.wikipedia.org/wiki/Elvis_operator">elvis operator</a> for hashes and arrays. It’ll retrieve a value from the array/hash, given a set of keys. If no value is found, it’ll return <code class="language-plaintext highlighter-rouge">nil</code>.</p>
+
+<p>Ruby 2.3 <a href="https://bugs.ruby-lang.org/issues/11537">also introduced a safe navigational operator</a>, but I won’t be covering this since <a href="http://mitrev.net/ruby/2015/11/13/the-operator-in-ruby/">Giorgi Mitrev wrote a very good article about it</a>.</p>
+
+<p>Here are some practical examples on how you could be using this on your code:</p>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="rails-parameters">Rails parameters</h3>
+
+<p>Whenever dealing with forms and their nested attributes, eventually, you’ll face nested hashes.</p>
+
+<p>Let’s say you want to convert some user checkboxes values to integers:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># receiving params as `params = { user: { choices: ["1", "3", "5"] } }`</span>
+<span class="k">def</span> <span class="nf">coerce_user_choices</span>
+  <span class="n">choices</span> <span class="o">=</span> <span class="n">params</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:user</span><span class="p">,</span> <span class="ss">:choices</span><span class="p">)</span> <span class="o">||</span> <span class="p">[]</span>
+  <span class="n">choices</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_i</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>That’s nice! Way better than reading</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">][</span><span class="ss">:choices</span><span class="p">]</span> <span class="o">||</span> <span class="p">[]</span>
+</code></pre></div></div>
+
+<h3 id="dealing-with-apis">Dealing with APIs</h3>
+
+<p>Imagine you’re receiving the following values from a JSON API:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="ss">person: </span><span class="p">{</span>
+    <span class="ss">attributes: </span><span class="p">{</span>
+      <span class="ss">address: </span><span class="p">{</span>
+        <span class="ss">street: </span><span class="s2">"Street Foo"</span><span class="p">,</span>
+        <span class="ss">country: </span><span class="p">{</span>
+          <span class="ss">name: </span><span class="s2">"Country Bar"</span><span class="p">,</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>With <code class="language-plaintext highlighter-rouge">#dig</code>, you can navigate through it without worrying about <code class="language-plaintext highlighter-rouge">nil</code>s or invalid attributes, allowing you to create a wrapper around this response object.</p>
+
+<p>Let’s say you wanted to select some of the JSON response data and format it to present to your view layer:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Presenter</span>
+  <span class="k">class</span> <span class="nc">Person</span>
+    <span class="nb">attr_reader</span> <span class="ss">:json</span>
+
+    <span class="no">PERSON_ATTRS</span>  <span class="o">=</span> <span class="p">[</span><span class="ss">:person</span><span class="p">,</span> <span class="ss">:attributes</span><span class="p">]</span>
+    <span class="no">COUNTRY_NAME</span>  <span class="o">=</span> <span class="no">PERSON_ATTRS</span> <span class="o">+</span> <span class="p">[</span><span class="ss">:address</span><span class="p">,</span> <span class="ss">:country</span><span class="p">,</span> <span class="ss">:name</span><span class="p">]</span>
+    <span class="no">STREET_NAME</span>   <span class="o">=</span> <span class="no">PERSON_ATTRS</span> <span class="o">+</span> <span class="p">[</span><span class="ss">:address</span><span class="p">,</span> <span class="ss">:street</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person_json</span><span class="p">)</span>
+      <span class="vi">@json</span> <span class="o">=</span> <span class="n">person_json</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">country</span>
+      <span class="n">json</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="o">*</span><span class="no">COUNTRY_NAME</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">street</span>
+      <span class="n">json</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="o">*</span><span class="no">STREET_NAME</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">presenter</span> <span class="o">=</span> <span class="no">Presenter</span><span class="o">::</span><span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">person_json</span><span class="p">)</span>
+<span class="n">presenter</span><span class="p">.</span><span class="nf">country</span> <span class="c1"># =&gt; "Country Bar"</span>
+<span class="n">presenter</span><span class="p">.</span><span class="nf">street</span>  <span class="c1"># =&gt; "Street Foo"</span>
+</code></pre></div></div>
+
+<p>Easy, isn’t it? Way nicer than using a bunch of <code class="language-plaintext highlighter-rouge">ActiveSupport#try</code>s everywhere. Better, It’s just Ruby!</p>
+
+<h3 id="refactoring-openstructs">Refactoring OpenStructs</h3>
+
+<p>Couple of years back, I’ve inherited a project with a bunch of nested <code class="language-plaintext highlighter-rouge">OpenStruct</code>s. The good part on <code class="language-plaintext highlighter-rouge">OpenStruct</code> is also its biggest disadvantage: it allows flexible attributes, making objects completely unpredictable.</p>
+
+<p>For the sake of simplicity, let’s say you have the following small scenario:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'ostruct'</span>
+
+<span class="k">class</span> <span class="nc">Country</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">read</span>
+    <span class="no">OpenStruct</span><span class="p">.</span><span class="nf">new</span><span class="p">({</span>
+      <span class="ss">name: </span><span class="s2">"Country Bar"</span>
+    <span class="p">})</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Address</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">read</span>
+    <span class="no">OpenStruct</span><span class="p">.</span><span class="nf">new</span><span class="p">({</span>
+      <span class="ss">country: </span><span class="no">Country</span><span class="p">.</span><span class="nf">read</span>
+    <span class="p">})</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">OpenStruct</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">read</span>
+    <span class="no">OpenStruct</span><span class="p">.</span><span class="nf">new</span><span class="p">({</span>
+      <span class="ss">address: </span><span class="no">Address</span><span class="p">.</span><span class="nf">read</span>
+    <span class="p">})</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># Querying a person's name:</span>
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">read</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">address</span><span class="p">.</span><span class="nf">country</span><span class="p">.</span><span class="nf">name</span> <span class="c1"># =&gt; "Country Bar"</span>
+</code></pre></div></div>
+
+<p>Terrifying, isn’t it?</p>
+
+<p>Now consider this: the <code class="language-plaintext highlighter-rouge">Address</code> class could actually return an empty <code class="language-plaintext highlighter-rouge">OpenStruct</code> instead of a populated one, or worse, just a null object. You would get <code class="language-plaintext highlighter-rouge">NoMethodError</code> being raised on almost every step you take when navigating this object. Wow…</p>
+
+<p>Now that we have power to <code class="language-plaintext highlighter-rouge">#dig</code> up this, we could transform everything into a hash and just dig it!</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># No more OpenStructs!</span>
+
+<span class="k">class</span> <span class="nc">Country</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">read</span>
+    <span class="p">{</span> <span class="ss">name: </span><span class="s2">"Country Bar"</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Address</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">read</span>
+    <span class="p">{</span> <span class="ss">country: </span><span class="no">Country</span><span class="p">.</span><span class="nf">read</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">OpenStruct</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">read</span>
+    <span class="p">{</span> <span class="ss">address: </span><span class="no">Address</span><span class="p">.</span><span class="nf">read</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># Querying a person's name:</span>
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">read</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:address</span><span class="p">,</span> <span class="ss">:country</span><span class="p">,</span> <span class="ss">:name</span><span class="p">)</span> <span class="c1"># =&gt; "Country Bar"</span>
+</code></pre></div></div>
+
+<p>This is way more readable and faster than <a href="http://blog.honeybadger.io/how-openstruct-and-hashes-can-kill-performance/">very slow Ruby OpenStructs</a>.</p>
+
+<h2 id="is-it-fast-enough">Is it fast enough?</h2>
+
+<p>What about <code class="language-plaintext highlighter-rouge">#dig</code>’s speed?</p>
+
+<p>Let’s compare some <code class="language-plaintext highlighter-rouge">#dig</code> methods with old ways to access Hashes and Arrays values:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'benchmark/ips'</span>
+
+<span class="no">Benchmark</span><span class="p">.</span><span class="nf">ips</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+  <span class="n">example_hash</span>  <span class="o">=</span> <span class="p">{</span> <span class="ss">a: </span><span class="p">{</span> <span class="ss">b: </span><span class="p">{</span> <span class="ss">c: </span><span class="mi">3</span> <span class="p">}</span> <span class="p">}</span> <span class="p">}</span>
+  <span class="n">example_array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">]]]</span>
+
+  <span class="n">x</span><span class="p">.</span><span class="nf">report</span><span class="p">(</span><span class="s2">"Hash#dig found"</span><span class="p">)</span>             <span class="p">{</span> <span class="n">example_hash</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:a</span><span class="p">,</span> <span class="ss">:b</span><span class="p">,</span> <span class="ss">:c</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">x</span><span class="p">.</span><span class="nf">report</span><span class="p">(</span><span class="s2">"Hash#dig not found"</span><span class="p">)</span>         <span class="p">{</span> <span class="n">example_hash</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="ss">:a</span><span class="p">,</span> <span class="ss">:b</span><span class="p">,</span> <span class="ss">:foo</span><span class="p">,</span> <span class="ss">:bar</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">x</span><span class="p">.</span><span class="nf">report</span><span class="p">(</span><span class="s2">"Hash navigation found"</span><span class="p">)</span>      <span class="p">{</span> <span class="n">example_hash</span><span class="p">[</span><span class="ss">:a</span><span class="p">][</span><span class="ss">:b</span><span class="p">][</span><span class="ss">:c</span><span class="p">]</span> <span class="p">}</span>
+  <span class="n">x</span><span class="p">.</span><span class="nf">report</span><span class="p">(</span><span class="s2">"Hash navigation not found"</span><span class="p">)</span>  <span class="p">{</span> <span class="n">example_hash</span><span class="p">[</span><span class="ss">:a</span><span class="p">][</span><span class="ss">:b</span><span class="p">][</span><span class="ss">:d</span><span class="p">]</span> <span class="p">}</span>
+
+  <span class="n">x</span><span class="p">.</span><span class="nf">report</span><span class="p">(</span><span class="s2">"Array#dig found"</span><span class="p">)</span>            <span class="p">{</span> <span class="n">example_array</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">x</span><span class="p">.</span><span class="nf">report</span><span class="p">(</span><span class="s2">"Array#dig not found"</span><span class="p">)</span>        <span class="p">{</span> <span class="n">example_array</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">x</span><span class="p">.</span><span class="nf">report</span><span class="p">(</span><span class="s2">"Array navigation found"</span><span class="p">)</span>     <span class="p">{</span> <span class="n">example_array</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">}</span>
+  <span class="n">x</span><span class="p">.</span><span class="nf">report</span><span class="p">(</span><span class="s2">"Array navigation not found"</span><span class="p">)</span> <span class="p">{</span> <span class="n">example_array</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
+
+  <span class="n">x</span><span class="p">.</span><span class="nf">compare!</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Comparison:
+Array navigation not found: 10120102.0 i/s
+Array navigation found:     9955150.5 i/s - same-ish: difference falls within error
+Array#dig found:            7998485.3 i/s - 1.27x  slower
+Array#dig not found:        7855449.0 i/s - 1.29x  slower
+
+Hash navigation not found:  7713907.2 i/s - 1.31x  slower
+Hash navigation found:      7582034.4 i/s - 1.33x  slower
+Hash#dig found:             6896451.4 i/s - 1.47x  slower
+Hash#dig not found:         6483433.9 i/s - 1.56x  slower
+</code></pre></div></div>
+
+<p>Worst case scenario is a 1.5x slower method, which still operates above the 6 million operations per second. Yep, this is fast enough.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The new <code class="language-plaintext highlighter-rouge">#dig</code> method versatility is amazing, as it now provides Ruby programmers the ability of querying unknown objects with ease and safety. It’s also fast enough to avoid any worries around performance when using it.</p>
+
+<p>One more great addition to Ruby’s incredible API :)</p>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES.
+     *  Docs: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    /*
+    var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+
+    var disqus_config = function () {
+        this.page.identifier = "/2016/08/27/ruby-2-3-dig/";
+    };
+
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//tiagoamaro.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+
+      <script src="https://npmcdn.com/cheet.js@0.3.3/cheet.min.js"></script>
+  <script src="/public/js/mobile_menu.js"></script>
+  <script src="/public/js/easter_egg.js"></script>
+  <script type="importmap">
+    { "imports": { "dompurify": "/public/js/emfed/dompurify.mjs" } }
+  </script>
+  <script type="module" src="/public/js/emfed/emfed.js"></script>
+
+  </body>
+</html>

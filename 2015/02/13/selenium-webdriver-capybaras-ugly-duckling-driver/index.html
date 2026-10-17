@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <!-- Meta SEO -->
+  
+    <meta name="description" content="If you use Capybara as your acceptance test framework (Test::Unit, RSpec or Cucumber), you surel...">
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Selenium WebDriver - The Capybara Ugly Duckling Driver | Tiago Padrela Amaro</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Selenium WebDriver - The Capybara Ugly Duckling Driver" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="If you use Capybara as your acceptance test framework (Test::Unit, RSpec or Cucumber), you surely know that Capybara has some drivers that give you the capability to run test pages with JS functionality. Some drivers with this ability that you might know are: selenium-webdriver, capybara-webkit and poltergeist." />
+<meta property="og:description" content="If you use Capybara as your acceptance test framework (Test::Unit, RSpec or Cucumber), you surely know that Capybara has some drivers that give you the capability to run test pages with JS functionality. Some drivers with this ability that you might know are: selenium-webdriver, capybara-webkit and poltergeist." />
+<link rel="canonical" href="https://tiagoamaro.com.br/2015/02/13/selenium-webdriver-capybaras-ugly-duckling-driver/" />
+<meta property="og:url" content="https://tiagoamaro.com.br/2015/02/13/selenium-webdriver-capybaras-ugly-duckling-driver/" />
+<meta property="og:site_name" content="Tiago Padrela Amaro" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-02-13T00:00:00-02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Selenium WebDriver - The Capybara Ugly Duckling Driver" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2015-02-13T00:00:00-02:00","datePublished":"2015-02-13T00:00:00-02:00","description":"If you use Capybara as your acceptance test framework (Test::Unit, RSpec or Cucumber), you surely know that Capybara has some drivers that give you the capability to run test pages with JS functionality. Some drivers with this ability that you might know are: selenium-webdriver, capybara-webkit and poltergeist.","headline":"Selenium WebDriver - The Capybara Ugly Duckling Driver","mainEntityOfPage":{"@type":"WebPage","@id":"https://tiagoamaro.com.br/2015/02/13/selenium-webdriver-capybaras-ugly-duckling-driver/"},"url":"https://tiagoamaro.com.br/2015/02/13/selenium-webdriver-capybaras-ugly-duckling-driver/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- Google Site Verification -->
+  <meta name="google-site-verification" content="R0IzQeYRkG8i9_d7_jq546RZ589H33qJwAs8X_EH23M" />
+
+  <!-- CSS -->
+  <!-- Orders the `legacy` cascade layer between Tailwind's `base` (Preflight)
+       and `components`/`utilities`: legacy still loses to Tailwind utility
+       classes regardless of selector specificity, but still beats Preflight's
+       resets for pages not yet migrated to Tailwind. -->
+  <style type="text/css">@layer theme, base, legacy, components, utilities;</style>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Berkshire+Swash"/>
+  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css"/>
+  <link rel="stylesheet" type="text/css" href="/public/js/emfed/toots.css"/>
+
+  <!-- Thank you so much to Garth Braithwaite (http://garthdb.com/writings/i-am-a-jekyll-god/) -->
+  <style type="text/css">
+    
+    @layer legacy {
+      .highlight .hll{background-color:#ffc}.highlight .c{color:#999}.highlight .err{color:#a00;background-color:#faa}.highlight .k{color:#069}.highlight .o{color:#555}.highlight .cm{color:#09f;font-style:italic}.highlight .cp{color:#099}.highlight .c1{color:#999}.highlight .cs{color:#999}.highlight .gd{background-color:#fcc;border:1px solid #c00}.highlight .ge{font-style:italic}.highlight .gr{color:red}.highlight .gh{color:#030}.highlight .gi{background-color:#cfc;border:1px solid #0c0}.highlight .go{color:#aaa}.highlight .gp{color:#009}.highlight .gu{color:#030}.highlight .gt{color:#9c6}.highlight .kc{color:#069}.highlight .kd{color:#069}.highlight .kn{color:#069}.highlight .kp{color:#069}.highlight .kr{color:#069}.highlight .kt{color:#078}.highlight .m{color:#f60}.highlight .s{color:#d44950}.highlight .na{color:#4f9fcf}.highlight .nb{color:#366}.highlight .nc{color:#0a8}.highlight .no{color:#360}.highlight .nd{color:#99f}.highlight .ni{color:#999}.highlight .ne{color:#c00}.highlight .nf{color:#c0f}.highlight .nl{color:#99f}.highlight .nn{color:#0cf}.highlight .nt{color:#2f6f9f}.highlight .nv{color:#033}.highlight .ow{color:#000}.highlight .w{color:#bbb}.highlight .mf{color:#f60}.highlight .mh{color:#f60}.highlight .mi{color:#f60}.highlight .mo{color:#f60}.highlight .sb{color:#c30}.highlight .sc{color:#c30}.highlight .sd{color:#c30;font-style:italic}.highlight .s2{color:#c30}.highlight .se{color:#c30}.highlight .sh{color:#c30}.highlight .si{color:#a00}.highlight .sx{color:#c30}.highlight .sr{color:#3aa}.highlight .s1{color:#c30}.highlight .ss{color:#fc3}.highlight .bp{color:#366}.highlight .vc{color:#033}.highlight .vg{color:#033}.highlight .vi{color:#033}.highlight .il{color:#f60}.css .o,.css .o+.nt,.css .nt+.nt{color:#999}
+    }
+  </style>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/favicons/touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicons/favicon.png">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+    <div class="sidebar bg-teal-800 px-4 py-8 text-center text-amber-50 md:fixed md:inset-y-0 md:left-0 md:w-72 md:text-left">
+  <div class="mx-auto max-w-xl px-4 md:absolute md:inset-4">
+    <div>
+      <h1 class="mt-0 font-brand text-5xl font-normal text-white">Tiago Padrela Amaro</h1>
+      <p class="text-xl font-light">Geek and coder</p>
+    </div>
+
+    <nav class="sidebar-nav mb-4 hidden md:block">
+      
+
+      
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/">About</a>
+          
+        
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/mastodon/">Mastodon</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/posts/">Posts</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/quotes/">Quotes</a>
+          
+        
+      
+        
+      
+    </nav>
+
+    <p class="sidebar-copyright hidden md:block">
+      <small>
+        &copy; 2026. Built with <a class="text-amber-50 hover:text-amber-400" href="http://jekyllrb.com/" target="_blank">Jekyll</a>. Hosted with <span class="fa fa-heart-o"></span> on <a class="text-amber-50 hover:text-amber-400" href="http://pages.github.com/" target="_blank">Github Pages</a>.
+      </small>
+    </p>
+
+    <a id="easter_egg" href="https://en.wikipedia.org/wiki/Doom_(1993_video_game)" class="hidden h-8 w-7" style="background-image: url(/public/images/doom_marine.gif);"></a>
+
+    <div class="mobile-menu-arrow mx-auto hidden h-4 w-4 rotate-45 cursor-pointer border-r-2 border-b-2 border-white max-md:block"></div>
+  </div>
+</div>
+
+
+    <div class="content mx-auto max-w-full px-4 pt-16 pb-16 md:mr-8 md:ml-80 lg:mr-16 lg:ml-88">
+      <div class="mb-16">
+  <h1 class="mt-0 text-neutral-800">Selenium WebDriver - The Capybara Ugly Duckling Driver</h1>
+
+  <span class="-mt-2 mb-4 block text-neutral-400">13 Feb 2015</span>
+
+  <div class="-mt-2.5 mb-2.5 text-sm" title="Estimated read time">
+  Reading time:
+
+  
+  
+    3 mins
+  
+</div>
+
+
+  <p>If you use Capybara as your acceptance test framework (<code class="language-plaintext highlighter-rouge">Test::Unit</code>, RSpec or Cucumber), you surely know that Capybara has some drivers that give you the capability to run test pages with JS functionality. Some drivers with this ability that you might know are: <a href="https://rubygems.org/gems/selenium-webdriver"><code class="language-plaintext highlighter-rouge">selenium-webdriver</code></a>, <a href="https://rubygems.org/gems/capybara-webkit"><code class="language-plaintext highlighter-rouge">capybara-webkit</code></a> and <a href="https://rubygems.org/gems/poltergeist"><code class="language-plaintext highlighter-rouge">poltergeist</code></a>.</p>
+
+<p>Each driver has its benefits and disadvantages, but in this article I’ll focus on Selenium.</p>
+
+<h2 id="why">Why?</h2>
+
+<p>There are many comparative articles on the web showing that some headless Capybara drivers can be twice as fast as Selenium (<a href="http://mrlab.sk/selenium-vs-poltergeist-vs-cabybara-webkit.html">#1</a>, <a href="http://blog.lucascaton.com.br/index.php/2012/06/14/replacing-selenium-by-poltergeist/">#2</a>). So why should we choose it to test our application?</p>
+
+<p>Simple: headless drivers are headless. Here are some facts based on my past experiences:</p>
+
+<ul>
+  <li>They don’t show what is happening on their interfaces</li>
+  <li>They don’t use UIs that real users use</li>
+  <li>You only can debug using <code class="language-plaintext highlighter-rouge">pry</code>, <code class="language-plaintext highlighter-rouge">byebug</code>, running <code class="language-plaintext highlighter-rouge">save_and_open_screenshot</code> or <code class="language-plaintext highlighter-rouge">save_and_open_page</code> (which will give an unrealistic pure HTML page)</li>
+  <li>You can’t interact with your application</li>
+  <li>Sometimes you will have to write a workaround to make your application work.</li>
+</ul>
+
+<blockquote>
+  <p>If you are familiar to the poltergeist gem, it is possible that you wrote some hacky JS code to send custom events on a certain element of the page. A quick example is described on this <a href="https://github.com/teampoltergeist/poltergeist/issues/488">github issue</a> where the developer tries to simulate the blur event. The poltergeist team is very efficient and they really do a good work on keeping the gem updated and stable, but the true problem lies on using PhantomJS to simulate an user input.</p>
+</blockquote>
+
+<p>Selenium will reliably simulate how your user interact with your application, opening (by default) a Firefox instance, and executing what you have written in your acceptance tests.</p>
+
+<h2 id="firefox-or-chrome">Firefox or Chrome?</h2>
+
+<p>The default Capybara JavaScript driver is Selenium. It will open a Firefox instance on your machine when executing acceptance tests that are defined to use JS on your test framework (in RSpec for example, you can put the metadata <code class="language-plaintext highlighter-rouge">:js</code> to make a feature spec use the JS driver).</p>
+
+<p>If you want to change this value, you should set the <code class="language-plaintext highlighter-rouge">Capybara.javascript_driver</code> variable with a registered driver, and according to the <a href="https://github.com/jnicklas/capybara#configuring-and-adding-drivers">Capybara docs</a>, you should be able to register Chrome as Selenium’s browser.</p>
+
+<p>To do that, you could overwrite the default <code class="language-plaintext highlighter-rouge">:selenium</code> driver, but here, I’ll be creating a new Capybara driver just for chrome:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Capybara</span><span class="p">.</span><span class="nf">register_driver</span> <span class="ss">:chrome</span> <span class="k">do</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span>
+  <span class="no">Capybara</span><span class="o">::</span><span class="no">Selenium</span><span class="o">::</span><span class="no">Driver</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="ss">:browser</span> <span class="o">=&gt;</span> <span class="ss">:chrome</span><span class="p">)</span>
+<span class="k">end</span></code></pre></figure>
+
+<p>After that, just set the <code class="language-plaintext highlighter-rouge">javascript_driver</code> to use your newly created <code class="language-plaintext highlighter-rouge">:chrome</code> driver:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Capybara</span><span class="p">.</span><span class="nf">javascript_driver</span> <span class="o">=</span> <span class="ss">:chrome</span></code></pre></figure>
+
+<blockquote>
+  <p>If you are willing to use Chrome as your webdriver, remember to install <a href="https://code.google.com/p/selenium/wiki/ChromeDriver"><code class="language-plaintext highlighter-rouge">ChromeDriver</code></a> on your machine, otherwise, Selenium will not be able to communicate with your Chrome installation. On OSX, just run <code class="language-plaintext highlighter-rouge">brew install chromedriver</code> and you are ready to go.</p>
+</blockquote>
+
+<h2 id="nice-but-my-specs-are-slow">Nice! But my specs are slow…</h2>
+
+<p>Not a problem! Knowing that you can register many drivers as you want, you should be able to choose which driver will run on which spec.</p>
+
+<p>On RSpec, Capybara allows you to choose which driver you want to run using the example metadata (<a href="https://github.com/jnicklas/capybara/blob/0.4.1/lib/capybara/rspec.rb#L15">since Capybara’s version 0.4.1!</a>).</p>
+
+<p>This is very useful if you are debugging a mysterious failing spec. On that spec, you could do this:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">scenario</span> <span class="s1">'my mysterious spec'</span><span class="p">,</span> <span class="ss">:js</span><span class="p">,</span> <span class="ss">:driver</span> <span class="o">=&gt;</span> <span class="ss">:chrome</span> <span class="k">do</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span></code></pre></figure>
+
+
+</div>
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES.
+     *  Docs: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    /*
+    var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+
+    var disqus_config = function () {
+        this.page.identifier = "/2015/02/13/selenium-webdriver-capybaras-ugly-duckling-driver/";
+    };
+
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//tiagoamaro.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+
+      <script src="https://npmcdn.com/cheet.js@0.3.3/cheet.min.js"></script>
+  <script src="/public/js/mobile_menu.js"></script>
+  <script src="/public/js/easter_egg.js"></script>
+  <script type="importmap">
+    { "imports": { "dompurify": "/public/js/emfed/dompurify.mjs" } }
+  </script>
+  <script type="module" src="/public/js/emfed/emfed.js"></script>
+
+  </body>
+</html>

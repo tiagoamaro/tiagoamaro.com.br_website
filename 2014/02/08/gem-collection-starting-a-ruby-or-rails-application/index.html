@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <!-- Meta SEO -->
+  
+    <meta name="description" content="Creating a project from scratch always require remembering about which Gems and what usefulness they had on your past projects. If you need to use some li...">
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Gem Collection - Starting a Ruby or Rails Application | Tiago Padrela Amaro</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Gem Collection - Starting a Ruby or Rails Application" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Creating a project from scratch always require remembering about which Gems and what usefulness they had on your past projects. If you need to use some library for a specific problem that fits in a category, use Ruby-Toolbox categories." />
+<meta property="og:description" content="Creating a project from scratch always require remembering about which Gems and what usefulness they had on your past projects. If you need to use some library for a specific problem that fits in a category, use Ruby-Toolbox categories." />
+<link rel="canonical" href="https://tiagoamaro.com.br/2014/02/08/gem-collection-starting-a-ruby-or-rails-application/" />
+<meta property="og:url" content="https://tiagoamaro.com.br/2014/02/08/gem-collection-starting-a-ruby-or-rails-application/" />
+<meta property="og:site_name" content="Tiago Padrela Amaro" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-02-08T00:00:00-02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Gem Collection - Starting a Ruby or Rails Application" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2014-02-08T00:00:00-02:00","datePublished":"2014-02-08T00:00:00-02:00","description":"Creating a project from scratch always require remembering about which Gems and what usefulness they had on your past projects. If you need to use some library for a specific problem that fits in a category, use Ruby-Toolbox categories.","headline":"Gem Collection - Starting a Ruby or Rails Application","mainEntityOfPage":{"@type":"WebPage","@id":"https://tiagoamaro.com.br/2014/02/08/gem-collection-starting-a-ruby-or-rails-application/"},"url":"https://tiagoamaro.com.br/2014/02/08/gem-collection-starting-a-ruby-or-rails-application/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- Google Site Verification -->
+  <meta name="google-site-verification" content="R0IzQeYRkG8i9_d7_jq546RZ589H33qJwAs8X_EH23M" />
+
+  <!-- CSS -->
+  <!-- Orders the `legacy` cascade layer between Tailwind's `base` (Preflight)
+       and `components`/`utilities`: legacy still loses to Tailwind utility
+       classes regardless of selector specificity, but still beats Preflight's
+       resets for pages not yet migrated to Tailwind. -->
+  <style type="text/css">@layer theme, base, legacy, components, utilities;</style>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Berkshire+Swash"/>
+  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css"/>
+  <link rel="stylesheet" type="text/css" href="/public/js/emfed/toots.css"/>
+
+  <!-- Thank you so much to Garth Braithwaite (http://garthdb.com/writings/i-am-a-jekyll-god/) -->
+  <style type="text/css">
+    
+    @layer legacy {
+      .highlight .hll{background-color:#ffc}.highlight .c{color:#999}.highlight .err{color:#a00;background-color:#faa}.highlight .k{color:#069}.highlight .o{color:#555}.highlight .cm{color:#09f;font-style:italic}.highlight .cp{color:#099}.highlight .c1{color:#999}.highlight .cs{color:#999}.highlight .gd{background-color:#fcc;border:1px solid #c00}.highlight .ge{font-style:italic}.highlight .gr{color:red}.highlight .gh{color:#030}.highlight .gi{background-color:#cfc;border:1px solid #0c0}.highlight .go{color:#aaa}.highlight .gp{color:#009}.highlight .gu{color:#030}.highlight .gt{color:#9c6}.highlight .kc{color:#069}.highlight .kd{color:#069}.highlight .kn{color:#069}.highlight .kp{color:#069}.highlight .kr{color:#069}.highlight .kt{color:#078}.highlight .m{color:#f60}.highlight .s{color:#d44950}.highlight .na{color:#4f9fcf}.highlight .nb{color:#366}.highlight .nc{color:#0a8}.highlight .no{color:#360}.highlight .nd{color:#99f}.highlight .ni{color:#999}.highlight .ne{color:#c00}.highlight .nf{color:#c0f}.highlight .nl{color:#99f}.highlight .nn{color:#0cf}.highlight .nt{color:#2f6f9f}.highlight .nv{color:#033}.highlight .ow{color:#000}.highlight .w{color:#bbb}.highlight .mf{color:#f60}.highlight .mh{color:#f60}.highlight .mi{color:#f60}.highlight .mo{color:#f60}.highlight .sb{color:#c30}.highlight .sc{color:#c30}.highlight .sd{color:#c30;font-style:italic}.highlight .s2{color:#c30}.highlight .se{color:#c30}.highlight .sh{color:#c30}.highlight .si{color:#a00}.highlight .sx{color:#c30}.highlight .sr{color:#3aa}.highlight .s1{color:#c30}.highlight .ss{color:#fc3}.highlight .bp{color:#366}.highlight .vc{color:#033}.highlight .vg{color:#033}.highlight .vi{color:#033}.highlight .il{color:#f60}.css .o,.css .o+.nt,.css .nt+.nt{color:#999}
+    }
+  </style>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/favicons/touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicons/favicon.png">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+    <div class="sidebar bg-teal-800 px-4 py-8 text-center text-amber-50 md:fixed md:inset-y-0 md:left-0 md:w-72 md:text-left">
+  <div class="mx-auto max-w-xl px-4 md:absolute md:inset-4">
+    <div>
+      <h1 class="mt-0 font-brand text-5xl font-normal text-white">Tiago Padrela Amaro</h1>
+      <p class="text-xl font-light">Geek and coder</p>
+    </div>
+
+    <nav class="sidebar-nav mb-4 hidden md:block">
+      
+
+      
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/">About</a>
+          
+        
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/mastodon/">Mastodon</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/posts/">Posts</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/quotes/">Quotes</a>
+          
+        
+      
+        
+      
+    </nav>
+
+    <p class="sidebar-copyright hidden md:block">
+      <small>
+        &copy; 2026. Built with <a class="text-amber-50 hover:text-amber-400" href="http://jekyllrb.com/" target="_blank">Jekyll</a>. Hosted with <span class="fa fa-heart-o"></span> on <a class="text-amber-50 hover:text-amber-400" href="http://pages.github.com/" target="_blank">Github Pages</a>.
+      </small>
+    </p>
+
+    <a id="easter_egg" href="https://en.wikipedia.org/wiki/Doom_(1993_video_game)" class="hidden h-8 w-7" style="background-image: url(/public/images/doom_marine.gif);"></a>
+
+    <div class="mobile-menu-arrow mx-auto hidden h-4 w-4 rotate-45 cursor-pointer border-r-2 border-b-2 border-white max-md:block"></div>
+  </div>
+</div>
+
+
+    <div class="content mx-auto max-w-full px-4 pt-16 pb-16 md:mr-8 md:ml-80 lg:mr-16 lg:ml-88">
+      <div class="mb-16">
+  <h1 class="mt-0 text-neutral-800">Gem Collection - Starting a Ruby or Rails Application</h1>
+
+  <span class="-mt-2 mb-4 block text-neutral-400">08 Feb 2014</span>
+
+  <div class="-mt-2.5 mb-2.5 text-sm" title="Estimated read time">
+  Reading time:
+
+  
+  
+    3 mins
+  
+</div>
+
+
+  <p>Creating a project from scratch always require remembering about which Gems and what usefulness they had on your past projects. If you need to use some library for a specific problem that fits in a category, use <a href="https://www.ruby-toolbox.com/categories/by_name">Ruby-Toolbox categories</a>.</p>
+
+<p>My current problem was remembering which Gems I used for keeping my code clean and add some performance to my projects. Those Gems are listed on very specific categories on Ruby Toolbox, so I have created a list of my favorite ones:</p>
+
+<h2 id="environment-independent">Environment Independent:</h2>
+
+<ul>
+  <li>localtunnel.me (npm)</li>
+</ul>
+
+<p>When I need to show my localhost to the world, I use the <a href="https://github.com/defunctzombie/localtunnel">defunctzombie/localtunnel</a>. This npm library is very performatic and creates a tunnel for you using HTTPS, so it is a double win.</p>
+
+<ul>
+  <li>pry</li>
+</ul>
+
+<p>“I want a debugging console where I can see all my variables, check my source code and modify my dev environment. Oh, and it needs to make coffee too.”</p>
+
+<p>If you always wanted that, you were asking for <a href="https://github.com/pry/pry">pry</a>. Every Ruby dev knows about it, and should know about it. It is a powerful shell for Ruby that can be binded anywhere in your code.</p>
+
+<p>Tip: Remember to check the <a href="https://github.com/pry/pry/wiki/Source-browsing#wiki-Show_method">pry wiki</a> for the <code class="language-plaintext highlighter-rouge">show-source</code> and <code class="language-plaintext highlighter-rouge">show-method</code>. This was a great tip from <a href="https://github.com/grillorafael">grillorafael</a>.</p>
+
+<ul>
+  <li>reek</li>
+</ul>
+
+<p><a href="https://github.com/troessner/reek">troessner/reek</a> detects code smells. Very good tip for beginners rubyists or experts with sleep privation.</p>
+
+<ul>
+  <li>rubocop</li>
+</ul>
+
+<p><a href="https://github.com/bbatsov/rubocop">bbatsov/rubocop</a> is an excelent Gem to keep a project within a style guide. <a href="http://www.joeloliveira.com/2014/02/06/maintain-style-with-rubocop.html">This blog post</a> gives a basic explanation about its use and how it can maintain your code with the same style among developers.</p>
+
+<h2 id="rack-applications">Rack Applications:</h2>
+
+<ul>
+  <li>better_errors</li>
+</ul>
+
+<p>It is true that Rails 4 introduced a new and friendlier error interface for our development environments, but it can’t be compared to <a href="https://github.com/charliesome/better_errors">charliesome/better_errors</a>.</p>
+
+<p>This Gem introduces a great error interface. It allows you to debug your errors and interact within the error context (if you add the <code class="language-plaintext highlighter-rouge">binding_of_caller</code> Gem, as described in the <a href="https://github.com/charliesome/better_errors#installation">better_errors installation guide</a>)</p>
+
+<ul>
+  <li>rack-mini-profiler</li>
+</ul>
+
+<p><a href="https://github.com/miniprofiler/rack-mini-profiler">miniprofiler/rack-mini-profiler</a> adds a simple speed badge in your development environment. Don’t misjudge this little badge. Click on it and see its real power! It shows your total page load time per view and the amount of time spent on your database. This Gem is wonderful when you are trying to speed up things on your application.</p>
+
+<h2 id="rails">Rails:</h2>
+
+<ul>
+  <li>bullet</li>
+</ul>
+
+<p>Trying to avoid dumb and slow ActiveRecord queries? Try <a href="https://github.com/flyerhzm/bullet">flyerhzm/bullet</a>. This gem helps you finding N+1 situations and when you should eager load instead of lazily use lazy loading.</p>
+
+<ul>
+  <li>rails_best_practices</li>
+</ul>
+
+<p><a href="https://github.com/railsbp/rails_best_practices">railsbp/rails_best_practices</a> can be compared to the <em>reek</em> Gem, but it is Rails specific. It uses various metrics to help you write a better and cleaner Rails application.</p>
+
+<ul>
+  <li>spring</li>
+</ul>
+
+<p><a href="https://github.com/rails/spring">rails/spring</a> is a Rails preloader, that speed up things in development so you can run <code class="language-plaintext highlighter-rouge">rails s</code> and your test environment (almost) without any delay.</p>
+
+<p>spring will be <a href="http://edgeguides.rubyonrails.org/4_1_release_notes.html#spring-application-preloader">enabled by default on Rails 4.1</a>, but in the meanwhile, you can just install it and run your specs in the speed of light.</p>
+
+<ul>
+  <li>zeus</li>
+</ul>
+
+<p><a href="https://github.com/burke/zeus">burke/zeus</a> is like the <em>spring</em> Gem, but it can preload other Rails commands like <code class="language-plaintext highlighter-rouge">rails g</code>.</p>
+
+<h2 id="bonus-gem">Bonus Gem:</h2>
+
+<ul>
+  <li>table_print</li>
+</ul>
+
+<p>This guy caught my attention after I checked his comment on two blog posts. The <a href="https://github.com/arches/table_print">arches/table_print</a> Gem helps you debugging your objects in a table format. Pretty neat. It reminds me of the JavaScript <a href="http://blog.mariusschulz.com/2013/11/13/advanced-javascript-debugging-with-consoletable"><code class="language-plaintext highlighter-rouge">console.table</code> command</a>.</p>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES.
+     *  Docs: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    /*
+    var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+
+    var disqus_config = function () {
+        this.page.identifier = "/2014/02/08/gem-collection-starting-a-ruby-or-rails-application/";
+    };
+
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//tiagoamaro.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+
+      <script src="https://npmcdn.com/cheet.js@0.3.3/cheet.min.js"></script>
+  <script src="/public/js/mobile_menu.js"></script>
+  <script src="/public/js/easter_egg.js"></script>
+  <script type="importmap">
+    { "imports": { "dompurify": "/public/js/emfed/dompurify.mjs" } }
+  </script>
+  <script type="module" src="/public/js/emfed/emfed.js"></script>
+
+  </body>
+</html>

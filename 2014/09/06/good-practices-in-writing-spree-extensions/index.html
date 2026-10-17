@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <!-- Meta SEO -->
+  
+    <meta name="description" content="This post is about writing extensions for Spree commerce, a “complete open source e-commerce solution for Ruby on Rails”. For those who don’t know what Sp...">
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Good practices in writing Spree extensions | Tiago Padrela Amaro</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Good practices in writing Spree extensions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This post is about writing extensions for Spree commerce, a “complete open source e-commerce solution for Ruby on Rails”. For those who don’t know what Spree is about, check out their official website or repository." />
+<meta property="og:description" content="This post is about writing extensions for Spree commerce, a “complete open source e-commerce solution for Ruby on Rails”. For those who don’t know what Spree is about, check out their official website or repository." />
+<link rel="canonical" href="https://tiagoamaro.com.br/2014/09/06/good-practices-in-writing-spree-extensions/" />
+<meta property="og:url" content="https://tiagoamaro.com.br/2014/09/06/good-practices-in-writing-spree-extensions/" />
+<meta property="og:site_name" content="Tiago Padrela Amaro" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-09-06T00:00:00-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Good practices in writing Spree extensions" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2014-09-06T00:00:00-03:00","datePublished":"2014-09-06T00:00:00-03:00","description":"This post is about writing extensions for Spree commerce, a “complete open source e-commerce solution for Ruby on Rails”. For those who don’t know what Spree is about, check out their official website or repository.","headline":"Good practices in writing Spree extensions","mainEntityOfPage":{"@type":"WebPage","@id":"https://tiagoamaro.com.br/2014/09/06/good-practices-in-writing-spree-extensions/"},"url":"https://tiagoamaro.com.br/2014/09/06/good-practices-in-writing-spree-extensions/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- Google Site Verification -->
+  <meta name="google-site-verification" content="R0IzQeYRkG8i9_d7_jq546RZ589H33qJwAs8X_EH23M" />
+
+  <!-- CSS -->
+  <!-- Orders the `legacy` cascade layer between Tailwind's `base` (Preflight)
+       and `components`/`utilities`: legacy still loses to Tailwind utility
+       classes regardless of selector specificity, but still beats Preflight's
+       resets for pages not yet migrated to Tailwind. -->
+  <style type="text/css">@layer theme, base, legacy, components, utilities;</style>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Berkshire+Swash"/>
+  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css"/>
+  <link rel="stylesheet" type="text/css" href="/public/js/emfed/toots.css"/>
+
+  <!-- Thank you so much to Garth Braithwaite (http://garthdb.com/writings/i-am-a-jekyll-god/) -->
+  <style type="text/css">
+    
+    @layer legacy {
+      .highlight .hll{background-color:#ffc}.highlight .c{color:#999}.highlight .err{color:#a00;background-color:#faa}.highlight .k{color:#069}.highlight .o{color:#555}.highlight .cm{color:#09f;font-style:italic}.highlight .cp{color:#099}.highlight .c1{color:#999}.highlight .cs{color:#999}.highlight .gd{background-color:#fcc;border:1px solid #c00}.highlight .ge{font-style:italic}.highlight .gr{color:red}.highlight .gh{color:#030}.highlight .gi{background-color:#cfc;border:1px solid #0c0}.highlight .go{color:#aaa}.highlight .gp{color:#009}.highlight .gu{color:#030}.highlight .gt{color:#9c6}.highlight .kc{color:#069}.highlight .kd{color:#069}.highlight .kn{color:#069}.highlight .kp{color:#069}.highlight .kr{color:#069}.highlight .kt{color:#078}.highlight .m{color:#f60}.highlight .s{color:#d44950}.highlight .na{color:#4f9fcf}.highlight .nb{color:#366}.highlight .nc{color:#0a8}.highlight .no{color:#360}.highlight .nd{color:#99f}.highlight .ni{color:#999}.highlight .ne{color:#c00}.highlight .nf{color:#c0f}.highlight .nl{color:#99f}.highlight .nn{color:#0cf}.highlight .nt{color:#2f6f9f}.highlight .nv{color:#033}.highlight .ow{color:#000}.highlight .w{color:#bbb}.highlight .mf{color:#f60}.highlight .mh{color:#f60}.highlight .mi{color:#f60}.highlight .mo{color:#f60}.highlight .sb{color:#c30}.highlight .sc{color:#c30}.highlight .sd{color:#c30;font-style:italic}.highlight .s2{color:#c30}.highlight .se{color:#c30}.highlight .sh{color:#c30}.highlight .si{color:#a00}.highlight .sx{color:#c30}.highlight .sr{color:#3aa}.highlight .s1{color:#c30}.highlight .ss{color:#fc3}.highlight .bp{color:#366}.highlight .vc{color:#033}.highlight .vg{color:#033}.highlight .vi{color:#033}.highlight .il{color:#f60}.css .o,.css .o+.nt,.css .nt+.nt{color:#999}
+    }
+  </style>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/favicons/touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicons/favicon.png">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+    <div class="sidebar bg-teal-800 px-4 py-8 text-center text-amber-50 md:fixed md:inset-y-0 md:left-0 md:w-72 md:text-left">
+  <div class="mx-auto max-w-xl px-4 md:absolute md:inset-4">
+    <div>
+      <h1 class="mt-0 font-brand text-5xl font-normal text-white">Tiago Padrela Amaro</h1>
+      <p class="text-xl font-light">Geek and coder</p>
+    </div>
+
+    <nav class="sidebar-nav mb-4 hidden md:block">
+      
+
+      
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/">About</a>
+          
+        
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/mastodon/">Mastodon</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/posts/">Posts</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-amber-50 hover:text-amber-400 focus:text-amber-400 hover:underline focus:underline" href="/quotes/">Quotes</a>
+          
+        
+      
+        
+      
+    </nav>
+
+    <p class="sidebar-copyright hidden md:block">
+      <small>
+        &copy; 2026. Built with <a class="text-amber-50 hover:text-amber-400" href="http://jekyllrb.com/" target="_blank">Jekyll</a>. Hosted with <span class="fa fa-heart-o"></span> on <a class="text-amber-50 hover:text-amber-400" href="http://pages.github.com/" target="_blank">Github Pages</a>.
+      </small>
+    </p>
+
+    <a id="easter_egg" href="https://en.wikipedia.org/wiki/Doom_(1993_video_game)" class="hidden h-8 w-7" style="background-image: url(/public/images/doom_marine.gif);"></a>
+
+    <div class="mobile-menu-arrow mx-auto hidden h-4 w-4 rotate-45 cursor-pointer border-r-2 border-b-2 border-white max-md:block"></div>
+  </div>
+</div>
+
+
+    <div class="content mx-auto max-w-full px-4 pt-16 pb-16 md:mr-8 md:ml-80 lg:mr-16 lg:ml-88">
+      <div class="mb-16">
+  <h1 class="mt-0 text-neutral-800">Good practices in writing Spree extensions</h1>
+
+  <span class="-mt-2 mb-4 block text-neutral-400">06 Sep 2014</span>
+
+  <div class="-mt-2.5 mb-2.5 text-sm" title="Estimated read time">
+  Reading time:
+
+  
+  
+    3 mins
+  
+</div>
+
+
+  <p>This post is about writing extensions for Spree commerce, a “complete open source e-commerce solution for Ruby on Rails”. For those who don’t know what Spree is about, check out their <a href="http://spreecommerce.com/">official website</a> or <a href="https://github.com/spree/spree">repository</a>.</p>
+
+<p>After reading all <a href="http://guides.spreecommerce.com/developer/">Spree dev guide</a>, you will notice that Spree is really powerful, but lacks some functionality like: user reviews, user comments, internationalization, and so on. You’ll quickly notice that all of this are added by spree extensions, and possibly you are going to write one.</p>
+
+<p>When writing a Spree extensions, keep in mind that other people will use them. If other devs are going to use them, initially, they will not want go trough your code. They’ll want to be end users to your extensions, installing and using it right out of the box.</p>
+
+<p>Working with Spree extensions made me kind of frustrated. Almost all <a href="https://github.com/spree">official extensions</a> are good to go, but when I needed some help of the community, I freaked out. I saw repositories with just one star and more than two hundred forks!</p>
+
+<p>That’s why I decided to write some “guides” to what I like to see when I check out an extension repository:</p>
+
+<h1 id="deface-listing">Deface listing</h1>
+
+<p>Spree uses <a href="https://github.com/spree/deface">deface</a> to extend its views, allowing ERB customization without editing the view directly.</p>
+
+<p>You can write some Spree defacing using two methods: writing a <code class="language-plaintext highlighter-rouge">Deface::Override</code> class or writing some <code class="language-plaintext highlighter-rouge">.deface</code> files and work with its DSL. That’s all documented on the deface repository.</p>
+
+<p>To avoid confusion over which views your extension is trying to override, try to create a small list on your <code class="language-plaintext highlighter-rouge">README</code> file, pointing out which files you overwrote.</p>
+
+<p>Examples:</p>
+
+<p><small>
+Using Deface::Override
+</small></p>
+
+<pre>
+// Specify which .rb files the user should look
+// Use the following filename pattern: your file should have the same name of your defacing
+...
+Defaces:
+
+Frontend
+* add_number_field_to_address_form.rb
+
+Backend
+* update_variation_image_to_show_sku.rb
+...
+</pre>
+
+<p><small>
+Using Deface DSL
+</small></p>
+
+<pre>
+// Write the selector you defaced after naming the file that was changed
+...
+Defaces:
+
+Frontend
+* spree/checkout/_address.html.erb [data-hook="billing_fieldset_wrapper"]
+* spree/products/index.html.erb [data-hook="search_results"]
+
+Backend
+* spree/admin/option_types/edit.html.erb #new_add_option_value
+...
+</pre>
+
+<h1 id="tests">Tests</h1>
+
+<p>Write tests! Just TEST IT!.</p>
+
+<p>Spree uses RSpec, so you should use it too. Spree have many helpers that can be useful, located in the <a href="https://github.com/spree/spree/tree/master/core/lib/spree/testing_support">spree/core/lib/spree/testing_support</a>, since 2.0 version.</p>
+
+<p>Every extension generated by Spree have a customized <code class="language-plaintext highlighter-rouge">Rakefile</code> that helps in the generation of a test app. This test app is an entire Rails application used for running your tests.</p>
+
+<p>Testing your extension have a interesting worflow: Generate the test app with <code class="language-plaintext highlighter-rouge">bundle exec rake test_app</code> and run your test suite. That’s it.</p>
+
+<p>You can read more about testing your extension or other Spree components here: <a href="http://guides.spreecommerce.com/developer/testing.html#testing-spree-components">http://guides.spreecommerce.com/developer/testing.html#testing-spree-components</a></p>
+
+<h1 id="compatible-versions">Compatible Versions</h1>
+
+<p>Try following Spree repositories naming conventions for your versioning.</p>
+
+<p>If your extension is compatible with versions 2.1.x, name that branch <code class="language-plaintext highlighter-rouge">2-1-stable</code>, if compatible with 2.2.x, name it <code class="language-plaintext highlighter-rouge">2-2-stable</code> and so on.</p>
+
+<h1 id="readme">README</h1>
+
+<p>Write a README. Don’t just let that “Introduction goes here” hanging there. Write a simple introduction to your extension, showing what it should do and how it should do.</p>
+
+<p>If your extension adds extra configurations to Spree or have some custom configurations that can be done, it is a good idea to list them in the README:</p>
+
+<p><small>
+  If you are using an extension configuration module
+</small></p>
+
+<pre>
+  ...
+  MyExtension::Config.foo_bar = false # display foo when its true. Default: true
+  ...
+</pre>
+
+<p><small>
+  Or extending spree configurations
+</small></p>
+
+<pre>
+  ...
+  This extension adds some preferences:
+
+  preference :best_selling_products_shown, :integer, :default =&gt; 9
+  ...
+</pre>
+
+<h1 id="some-extra-quick-tips">Some extra quick tips</h1>
+<ul>
+  <li>Don’t fill up Install generators (Avoid importing CSS, JS that don’t do nothing)</li>
+  <li>Read carefully the official <a href="http://guides.spreecommerce.com/developer/extensions_tutorial.html">extensions tutorial</a></li>
+  <li>Read trough the official extensions. Check out how they extend Spree, write specs, code, and so on.</li>
+</ul>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES.
+     *  Docs: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    /*
+    var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+
+    var disqus_config = function () {
+        this.page.identifier = "/2014/09/06/good-practices-in-writing-spree-extensions/";
+    };
+
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//tiagoamaro.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+
+      <script src="https://npmcdn.com/cheet.js@0.3.3/cheet.min.js"></script>
+  <script src="/public/js/mobile_menu.js"></script>
+  <script src="/public/js/easter_egg.js"></script>
+  <script type="importmap">
+    { "imports": { "dompurify": "/public/js/emfed/dompurify.mjs" } }
+  </script>
+  <script type="module" src="/public/js/emfed/emfed.js"></script>
+
+  </body>
+</html>
