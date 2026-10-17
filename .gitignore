@@ -88,3 +88,6 @@ crashlytics-build.properties
 
 ### Node ###
 node_modules/
+
+### Claude Code ###
+.claude/
