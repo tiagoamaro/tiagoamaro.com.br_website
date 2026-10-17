@@ -1,11 +1,15 @@
-[tiagoamaro.com.br](http://tiagoamaro.com.br) (Using Jekyll)
+[tiagoamaro.com.br](https://tiagoamaro.com.br)
 ========================
 
-Personal website implementation (Jekyll)
+Personal website, plain static HTML styled with Tailwind CSS, hosted on GitHub Pages.
 
-# [Jekyll](http://jekyllrb.com/)
+# Development
 
-To know more about Jekyll and its static page serving, check [their website](http://jekyllrb.com/). Really awesome.
+```sh
+make install  # npm ci
+make up       # Tailwind watcher + http://localhost:4000
+make build    # rebuild public/css/tailwind.css
+```
 
 # License
 
