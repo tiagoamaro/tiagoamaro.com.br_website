@@ -6,7 +6,7 @@ install-ruby:
 	bundle install
 
 install-node:
-	npm install
+	npm ci
 
 build:
 	npm run build:css
