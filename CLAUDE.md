@@ -2,7 +2,7 @@
 
 ## Structure
 
-Plain static HTML served by GitHub Pages from the `gh-pages` branch. `.nojekyll`
+Plain static HTML served by GitHub Pages from the `main` branch. `.nojekyll`
 stops Pages from running Jekyll. The pages came from a final `jekyll build`, so
 URLs keep Jekyll's pretty permalinks as real folders:
 
