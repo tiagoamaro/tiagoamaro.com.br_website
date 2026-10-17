@@ -1,18 +1,12 @@
-.PHONY: install install-ruby install-node build up
+.PHONY: install build up
 
-install: install-ruby install-node
-
-install-ruby:
-	bundle install
-
-install-node:
+install:
 	npm ci
 
 build:
 	npm run build:css
-	bundle exec jekyll build
 
 up:
 	npm run watch:css & \
-	bundle exec jekyll serve; \
+	python3 -m http.server 4000; \
 	kill %1
