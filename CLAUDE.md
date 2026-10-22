@@ -26,7 +26,8 @@ HTML files.
 
 Vanilla Tailwind v4 default scale values only: no arbitrary values
 (`w-[123px]`), no theme extensions, unless explicitly approved. The only
-`@theme` token is `--font-brand` (Berkshire Swash wordmark).
+`@theme` tokens are `--font-brand` (Berkshire Swash wordmark) and the
+terracotta logo palette: `terracotta`, `cream`, `gold`, `cocoa`.
 
 Markdown-era raw tags (`h1`-`h6`, `p`, `blockquote`, `table`, `pre`, etc.)
 carry no classes, so they are styled in the `@layer base` block of

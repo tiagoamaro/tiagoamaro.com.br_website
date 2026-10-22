@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
-/* Brand wordmark font, loaded via Google Fonts in head.html */
+/* Brand wordmark font, loaded via Google Fonts in head.html, and the terracotta logo palette */
 @theme {
   --font-brand: "Berkshire Swash", serif;
+
+  --color-terracotta: #B5533C;
+  --color-cream: #FBF1E6;
+  --color-gold: #E8B04B;
+  --color-cocoa: #5A2A1C;
 }
 
 /*
@@ -18,11 +23,11 @@
   }
 
   body {
-    @apply text-neutral-600 bg-white;
+    @apply text-neutral-600 bg-cream;
   }
 
   a {
-    @apply text-sky-600 underline;
+    @apply text-cocoa underline decoration-terracotta;
   }
   a:hover {
     @apply decoration-2;
@@ -77,7 +82,7 @@
     @apply font-mono;
   }
   code {
-    @apply rounded px-2 py-1 text-sm text-red-400 bg-neutral-50;
+    @apply rounded px-2 py-1 text-sm text-terracotta bg-neutral-50;
   }
   pre {
     @apply mt-0 mb-4 block p-4 text-sm leading-snug whitespace-pre-wrap break-all wrap-break-word bg-neutral-50;
@@ -110,7 +115,7 @@
   }
 
   blockquote {
-    @apply my-4 border-l-4 border-neutral-200 py-2 px-4 text-neutral-500;
+    @apply my-4 border-l-4 border-terracotta py-2 px-4 text-neutral-500;
   }
   blockquote p:last-child {
     @apply mb-0;
@@ -129,11 +134,6 @@
   tbody tr:nth-child(odd) td,
   tbody tr:nth-child(odd) th {
     @apply bg-neutral-50;
-  }
-
-  /* Links inside rendered content — brand color, matches sidebar bg-teal-800 */
-  .content a {
-    @apply text-teal-800;
   }
 
   button {
