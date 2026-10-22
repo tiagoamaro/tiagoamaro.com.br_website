@@ -21,7 +21,9 @@ in `posts/index.html`. Disqus threads are keyed by the post URL
 ## CSS
 
 Tailwind v4: `_tailwind/input.css` → `public/css/tailwind.css` via `make
-build`. The compiled CSS is committed. Tailwind finds classes by scanning the
+build`. The compiled CSS is committed. `make build` also stamps the CSS
+hash into each page's `tailwind.css?v=` link, since Cloudflare caches the
+stylesheet for 4h and would otherwise serve old CSS to new HTML. Tailwind finds classes by scanning the
 HTML files.
 
 Vanilla Tailwind v4 default scale values only: no arbitrary values
