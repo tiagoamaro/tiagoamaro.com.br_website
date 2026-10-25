@@ -36,7 +36,7 @@
        resets for pages not yet migrated to Tailwind. -->
   <style type="text/css">@layer theme, base, legacy, components, utilities;</style>
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Berkshire+Swash"/>
-  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css?v=f39dce44"/>
+  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css?v=3d288117"/>
   <link rel="stylesheet" type="text/css" href="/public/js/emfed/toots.css"/>
 
   <link rel="stylesheet" type="text/css" href="/public/css/syntax.css"/>
@@ -171,36 +171,61 @@
 <p>I’ve created a sample project that have a <code class="language-plaintext highlighter-rouge">SchemaSearchable</code> concern and a rake task that helps to reindex all tenants using searchkick. This project can <a href="https://github.com/tiagoamaro/searchkick-apartment-example">be found here</a></p>
 
 </div>
+<hr>
 
-<div id="disqus_thread"></div>
-<script>
-    /**
-     *  RECOMMENDED CONFIGURATION VARIABLES.
-     *  Docs: https://disqus.com/admin/universalcode/#configuration-variables
-     */
-    /*
-    var disqus_config = function () {
-        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-
-    var disqus_config = function () {
-        this.page.identifier = "/2014/12/11/multi-tenancy-with-searchkick/";
-    };
-
-    (function() {  // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-
-        s.src = '//tiagoamaro.disqus.com/embed.js';
-
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
+<section id="comments">
+<h2>Comments</h2>
+<article id="comment-2888365744" class="mt-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/disqus_dp0AXizJvy/" rel="nofollow noopener">Marklar</a> · <time datetime="2016-09-11T23:54:21Z">11 Sep 2016</time></p>
+  <div><p>Thanks for the helpful post. I'm new to elasticsearch and am implementing now with searchkick in my multitenant app. I've realised that creating an index for every model and tenant pairing is going to be expensive and possibly not scalable (<a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/kagillion-shards.html" rel="nofollow noopener">https://www.elastic.co/guide/en/elasticsearch/guide/current/kagillion-shards.html</a>).</p><p>Did you implement this in a deployed production environment and if yes, are you able to share how you were able to keep costs down and allow scalability? Thanks.</p></div>
+<article id="comment-2888958343" class="mt-4 ml-2 border-l-2 border-neutral-200 pl-4 md:ml-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/tiagoamaro/" rel="nofollow noopener">tiagoamaro</a> · <time datetime="2016-09-12T10:52:10Z">12 Sep 2016</time></p>
+  <div><p>Hi Marklar ,<br>I've used this approach on a real production application that didn't reach more than 30 users, so I didn't have issues around scalability. It kept very reliable and responsive with a two node cluster hosted on <a href="http://found.no/" rel="nofollow noopener">http://found.no/</a>. I no longer work on this project, so I don't know how it's going nowadays.</p><p>I chose using the User model to separate tenants, since I knew we were going to have "few admin users which would create different stores", so their numbers wouldn't grow so much. It's possible that you have a bigger problem on your hands. Probably, you could solve it by thinking on an additional layer to separate your tenants, and not necessarily separating them by each user, but groups of user (e.g. stores, buildings, neighborhoods).</p></div>
+<article id="comment-2893179890" class="mt-4 ml-2 border-l-2 border-neutral-200 pl-4 md:ml-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/disqus_dp0AXizJvy/" rel="nofollow noopener">Marklar</a> · <time datetime="2016-09-14T03:46:35Z">14 Sep 2016</time></p>
+  <div><p>Thanks for taking the time to reply. At the moment I'm creating an index per model and using searchkick's where clause to add the tenant filter.</p><p>With 30 users you still would have had a large number of indicies created though wouldn't you? For example, if you had 2 models then that would be 60 indicies (at least 60 shards if I'm not mistake). Plus you likely would have replica shards as well.</p><p>I'm reading how too many indicies are a bad thing but I'm unsure what constitutes too many. If we look at the plans on Bonsai we see the $50 plan has a limit of 20 shards, 30 users would already require more than this.</p><p>For reference, here is some of what I have read:<br>&gt;It's actually quite common (unfortunately) for many Elasticsearch clients to adopt an index per model paradigm as the default for data organization. Sharding this way can be a premature optimization unless your scaling trajectory is well understood. In practice, small sets of data probably won't benefit from any kind of data partitioning. It’s perfectly reasonable to treat an index as analogous to, say, a Postgres database.<br>Elasticsearch even supports this kind of internal partitioning with their index “types” feature.<br><a href="https://docs.bonsai.io/docs/reducing-shard-usage" rel="nofollow noopener">https://docs.bonsai.io/docs/reducing-shard-usage</a></p><p>&gt;ES makes it very easy to create a lot of indices and lots and lots of shards, but it’s important to understand that each index and shard comes at a cost. If you have too many indices or shards, the management load alone can degrade your ES cluster performance, potentially to the point of making it unusable.<br><a href="https://www.loggly.com/blog/nine-tips-configuring-elasticsearch-for-high-performance/" rel="nofollow noopener">https://www.loggly.com/blog/nine-tips-configuring-elasticsearch-for-high-performance/</a></p><p>&gt;There is a limit to how many indexes Elasticsearch can cope with. Every shard of every index is a separate Lucene index, which in turn comprises several files. A process cannot have an unlimited number of open files. Also, every shard has its associated control structures in memory. So, while we will let you make as many indexes as you want, there are limiting factors.<br><a href="https://www.elastic.co/cloud/as-a-service/pricing" rel="nofollow noopener">https://www.elastic.co/cloud/as-a-service/pricing</a></p></div>
+<article id="comment-2893909738" class="mt-4 ml-2 border-l-2 border-neutral-200 pl-4 md:ml-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/tiagoamaro/" rel="nofollow noopener">tiagoamaro</a> · <time datetime="2016-09-14T15:52:00Z">14 Sep 2016</time></p>
+  <div><p>Thank you for your research around the issue Marklar , but I wouldn't know to answer you precisely, since that project first used a digital ocean droplet, and after that, I migrated to ElasticCloud (which was called <a href="http://found.no" rel="nofollow noopener">found.no</a>). On ElasticCloud, I used 2 two data centers and never looked back to carrying about Elasticsearch setup.</p><p>On both scenarios, I never had much complications on supporting all indexes with its documents. The scenario was small: 30 users with about 250 searchable products each one, which leads to 7500 documents of 3KB, totaling 22.5 MB documents within 30 indexes (each index for user/product relationship).</p><p>IMHO, I don't think you should worry about the max amount of files and indexes that your application is going to handle. I can't imagine a scenario where, using searchkick + multi tenant approach you would have more than 50k indexes from day 1. Probably, when you reach this point (or if you already using sidekiq as a different approach to an existing app), I would stick with my past recommendation: a higher level of abstraction on your models.</p><p>Cheers,</p></div>
+<article id="comment-6067197226" class="mt-4 ml-2 border-l-2 border-neutral-200 pl-4 md:ml-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/cosmic_0wl/" rel="nofollow noopener">Cosmic</a> · <time datetime="2022-12-16T00:09:45Z">16 Dec 2022</time></p>
+  <div><p>I've had a lot of trouble running out of shards. One index per model, per workspace is absolutely a problem. One that I'm not sure how to solve yet but the ES shard limit is my number one issue. This is a highly, highly unscalable solution.</p></div>
+</article>
+</article>
+</article>
+</article>
+</article>
+<article id="comment-3108038444" class="mt-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/jordanomoscoso/" rel="nofollow noopener">Jordano Moscoso</a> · <time datetime="2017-01-19T16:34:07Z">19 Jan 2017</time></p>
+  <div><p>Great post bro. Question, should i add that to the excluded models (public tenant on apartment) too?</p></div>
+<article id="comment-3108049752" class="mt-4 ml-2 border-l-2 border-neutral-200 pl-4 md:ml-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/tiagoamaro/" rel="nofollow noopener">tiagoamaro</a> · <time datetime="2017-01-19T16:41:12Z">19 Jan 2017</time></p>
+  <div><p>No.</p><p>But, if you want your excluded models to be searcheable, you'll have to use a different strategy for naming their indexes (since they're going to be shared between tenants). Probably something that won't include the <code>Apartment::Tenant.current</code> string. In that way, all users could search the model.</p></div>
+<article id="comment-3108312857" class="mt-4 ml-2 border-l-2 border-neutral-200 pl-4 md:ml-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/jordanomoscoso/" rel="nofollow noopener">Jordano Moscoso</a> · <time datetime="2017-01-19T18:35:18Z">19 Jan 2017</time></p>
+  <div><p>You are right. I just use <code>-&gt; { [Apartment::Tenant.default_tenant, model_name.plural, Rails.env].join('_') }</code> And everything works.</p></div>
+</article>
+</article>
+</article>
+<article id="comment-4401976650" class="mt-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/gordonduquesnay/" rel="nofollow noopener">Gordon DuQuesnay</a> · <time datetime="2019-03-30T01:41:29Z">30 Mar 2019</time></p>
+  <div><p>In our app we are doing multi tenancy via default scopes rather than using the apartment gem.  So far we've been adding the account_id (tenant identifier) to the index.  By doing:</p><figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">search_data</span>
+  <span class="p">{</span>
+    <span class="ss">name: </span><span class="nb">name</span><span class="p">,</span>
+    <span class="ss">email: </span><span class="n">email</span><span class="p">,</span>
+    <span class="ss">person_type: </span><span class="n">type</span><span class="p">.</span><span class="nf">downcase</span><span class="p">,</span>
+    <span class="ss">account_id: </span><span class="n">account_id</span><span class="p">,</span>
+    <span class="ss">in_campaign_ids: </span><span class="n">applications</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:campaign_id</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="k">end</span></code></pre></figure><p>And when querying it including <code>where: {account_id: Account.current_id}</code> in all queries.  I think a similar approach would also work for the apartment gem without having to worry about number of indexes, shards, Bonsai plans on heroku, etc.  It seems to be working so far but please let me know if any of you see a problem with this approach.</p><p>Edit:<br>Forgot to mention that we also included a method to do unscoped reindexing which we found to be much faster than switching to each account:</p><figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">unscoped_reindex</span>
+   <span class="no">Application</span><span class="p">.</span><span class="nf">unscoped</span><span class="p">{</span> <span class="no">Applicant</span><span class="p">.</span><span class="nf">unscoped</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="ss">:applications</span><span class="p">).</span><span class="nf">reindex</span><span class="p">}</span>
+<span class="k">end</span></code></pre></figure></div>
+<article id="comment-4739030771" class="mt-4 ml-2 border-l-2 border-neutral-200 pl-4 md:ml-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/joshuapinter/" rel="nofollow noopener">joshuapinter</a> · <time datetime="2019-12-29T21:48:43Z">29 Dec 2019</time></p>
+  <div><p>Just letting you know, we're doing the same thing. We overrode the <code>search</code> method on all "searchable" models and just add <code>where{ account_id: @account.id }</code> to all search queries automatically. Works great! Thanks for the pointer in the right direction.</p></div>
+</article>
+</article>
+</section>
 
     </div>
 

@@ -15,8 +15,8 @@ URLs keep Jekyll's pretty permalinks as real folders:
 There are no templates. The `<head>`, sidebar and scripts are duplicated in
 every page, so a shared markup change is a find-and-replace across all HTML
 files. A new post means a new `index.html` under its date path plus an entry
-in `posts/index.html`. Disqus threads are keyed by the post URL
-(`this.page.identifier`), so never move a post.
+in `posts/index.html`. Comments are closed: the old Disqus threads are inlined
+as static HTML at the bottom of their posts.
 
 ## CSS
 

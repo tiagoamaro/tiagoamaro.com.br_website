@@ -37,7 +37,7 @@
        resets for pages not yet migrated to Tailwind. -->
   <style type="text/css">@layer theme, base, legacy, components, utilities;</style>
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Berkshire+Swash"/>
-  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css?v=f39dce44"/>
+  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css?v=3d288117"/>
   <link rel="stylesheet" type="text/css" href="/public/js/emfed/toots.css"/>
 
   <link rel="stylesheet" type="text/css" href="/public/css/syntax.css"/>
@@ -144,36 +144,19 @@
 <p>Ruby memory allocation can be tricky, as this post is a very deep analysis on what’s going on behind the curtains.</p>
 
 </div>
+<hr>
 
-<div id="disqus_thread"></div>
-<script>
-    /**
-     *  RECOMMENDED CONFIGURATION VARIABLES.
-     *  Docs: https://disqus.com/admin/universalcode/#configuration-variables
-     */
-    /*
-    var disqus_config = function () {
-        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-
-    var disqus_config = function () {
-        this.page.identifier = "/2017/11/28/rails-and-performance-gems/";
-    };
-
-    (function() {  // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-
-        s.src = '//tiagoamaro.disqus.com/embed.js';
-
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
+<section id="comments">
+<h2>Comments</h2>
+<article id="comment-3696459144" class="mt-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/disqus_WRxj2KeAri/" rel="nofollow noopener">Ana Martínez</a> · <time datetime="2018-01-07T19:51:54Z">07 Jan 2018</time></p>
+  <div><p>Good tools! ;) Have you checked <a href="https://github.com/ruby-prof/ruby-prof?" rel="nofollow noopener">https://github.com/ruby-prof/ruby-prof?</a> I want to give it a try, but I haven't had time yet.</p></div>
+<article id="comment-3696480147" class="mt-4 ml-2 border-l-2 border-neutral-200 pl-4 md:ml-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/tiagoamaro/" rel="nofollow noopener">tiagoamaro</a> · <time datetime="2018-01-07T20:07:22Z">07 Jan 2018</time></p>
+  <div><p>Nice tool :) will check it out.</p><p>It seems it allows a more insightful analysis on what's going on on the Ruby stack. More powerful, but (IMO), more complicated to use than `rack-mini-profiler`.</p><p>Really liked ruby prof's modes: <a href="https://github.com/ruby-prof/ruby-prof?#measure-modes" rel="nofollow noopener">https://github.com/ruby-prof/ruby-prof?#measure-modes</a> . So many possibilities =D</p><p>Will add to this post! Thanks!</p><p>Update: `ruby-prof``s modes reminded me the `derailed_benchmarks` modes for Rails apps, but well, derailed only works for Rails! Very nice to know about `ruby-prof`! Thanks!</p></div>
+</article>
+</article>
+</section>
 
     </div>
 

@@ -36,7 +36,7 @@
        resets for pages not yet migrated to Tailwind. -->
   <style type="text/css">@layer theme, base, legacy, components, utilities;</style>
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Berkshire+Swash"/>
-  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css?v=f39dce44"/>
+  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css?v=3d288117"/>
   <link rel="stylesheet" type="text/css" href="/public/js/emfed/toots.css"/>
 
   <link rel="stylesheet" type="text/css" href="/public/css/syntax.css"/>
@@ -222,36 +222,19 @@ Backend
 </ul>
 
 </div>
+<hr>
 
-<div id="disqus_thread"></div>
-<script>
-    /**
-     *  RECOMMENDED CONFIGURATION VARIABLES.
-     *  Docs: https://disqus.com/admin/universalcode/#configuration-variables
-     */
-    /*
-    var disqus_config = function () {
-        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-
-    var disqus_config = function () {
-        this.page.identifier = "/2014/09/06/good-practices-in-writing-spree-extensions/";
-    };
-
-    (function() {  // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-
-        s.src = '//tiagoamaro.disqus.com/embed.js';
-
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
+<section id="comments">
+<h2>Comments</h2>
+<article id="comment-2492191155" class="mt-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/disqus_Drr0fqTGQR/" rel="nofollow noopener">newapp</a> · <time datetime="2016-02-02T16:44:31Z">02 Feb 2016</time></p>
+  <div><p>Hi I am a new Spree user. I thought this is a big community however as you said when I tried to use its extension I was freaked out. It's nearly impossible to just install any extension directly. At the moment I am using Solidus, a forked version of SpreeCommerce because Spree project is discontinued after its acquisition by First Data. Solidus is still well maintained but just as SpreeCommerce, it lacks support of extensions. Do I need to write all the extensions by myself now? I can't even find a free theme for my solidus store which is really sad.</p></div>
+<article id="comment-2492603363" class="mt-4 ml-2 border-l-2 border-neutral-200 pl-4 md:ml-6">
+  <p class="mb-2 text-sm text-neutral-500"><a href="https://disqus.com/by/tiagoamaro/" rel="nofollow noopener">tiagoamaro</a> · <time datetime="2016-02-02T20:19:25Z">02 Feb 2016</time></p>
+  <div><p>You've said it all. Those are the real consequences of the lack of adoption and community support of any open-source project, and Spree was huge. It had good intent, but its OSS approach failed as it became distant from its community with their private earning goals (this kind of discontinuation happens, but it could be noticed by Spree).</p><p>e-commerce is a really complex piece of software to build, and plugins usually are the best answer to quick develop something that would take lots of effort to do by yourself. What we can do with the current Spree/Solidus ecosystem state is just get plugins, fork, and customize them or rewrite them from scratch, as they're usually unmaintained.</p><p>Solidus is new, and it's still struggling with all defects that Spree left behind. I believe that Solidus can build a really good OSS community behind its software, but they need to be careful on not repeating the same mistake as Spree. I believe that Bonobos + Stembolt, the companies behind Solidus, has good intent with that, as they're planning a conference in Toronto in May this year (<a href="http://conf.solidus.io/" rel="nofollow noopener">http://conf.solidus.io/</a>) and quick answer github answers.</p></div>
+</article>
+</article>
+</section>
 
     </div>
 
