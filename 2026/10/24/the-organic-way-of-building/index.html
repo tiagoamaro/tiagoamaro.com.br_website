@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <!-- Meta SEO -->
+  <meta name="description" content="Years went by since I've posted something in this website, and for a reason: the landscape of software engineering was in a steering internal loop of self im...">
+
+<title>The “organic” way of building | Tiago Padrela Amaro</title>
+<meta property="og:title" content="The “organic” way of building" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="More and more videos, tweets, posts and fellow colleagues are giving up technology due to burnout. What tech should be leveraging (more time, &quot;touching more green&quot;, etc.), is now leading us to long standing hackathons, whether we like it or not. The mythical man month likeness that we're reaching, the utopia where we can ship more, but we actually don't get more resources, only a very fast typist, our new LLM / stochastic parrot companions." />
+<meta property="og:description" content="More and more videos, tweets, posts and fellow colleagues are giving up technology due to burnout. What tech should be leveraging (more time, &quot;touching more green&quot;, etc.), is now leading us to long standing hackathons, whether we like it or not. The mythical man month likeness that we're reaching, the utopia where we can ship more, but we actually don't get more resources, only a very fast typist, our new LLM / stochastic parrot companions." />
+<link rel="canonical" href="https://tiagoamaro.com.br/2026/10/24/the-organic-way-of-building/" />
+<meta property="og:url" content="https://tiagoamaro.com.br/2026/10/24/the-organic-way-of-building/" />
+<meta property="og:site_name" content="Tiago Padrela Amaro" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-10-24T00:00:00-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="The “organic” way of building" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2026-10-24T00:00:00-03:00","datePublished":"2026-10-24T00:00:00-03:00","description":"More and more videos, tweets, posts and fellow colleagues are giving up technology due to burnout. What tech should be leveraging (more time, \"touching more green\", etc.), is now leading us to long standing hackathons, whether we like it or not. The mythical man month likeness that we're reaching, the utopia where we can ship more, but we actually don't get more resources, only a very fast typist, our new LLM / stochastic parrot companions.","headline":"The “organic” way of building","mainEntityOfPage":{"@type":"WebPage","@id":"https://tiagoamaro.com.br/2026/10/24/the-organic-way-of-building/"},"url":"https://tiagoamaro.com.br/2026/10/24/the-organic-way-of-building/"}</script>
+
+
+  <!-- Google Site Verification -->
+  <meta name="google-site-verification" content="R0IzQeYRkG8i9_d7_jq546RZ589H33qJwAs8X_EH23M" />
+
+  <!-- CSS -->
+  <!-- Orders the `legacy` cascade layer between Tailwind's `base` (Preflight)
+       and `components`/`utilities`: legacy still loses to Tailwind utility
+       classes regardless of selector specificity, but still beats Preflight's
+       resets for pages not yet migrated to Tailwind. -->
+  <style type="text/css">@layer theme, base, legacy, components, utilities;</style>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Berkshire+Swash"/>
+  <link rel="stylesheet" type="text/css" href="/public/css/tailwind.css?v=f39dce44"/>
+  <link rel="stylesheet" type="text/css" href="/public/js/emfed/toots.css"/>
+
+  <link rel="stylesheet" type="text/css" href="/public/css/syntax.css"/>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/favicons/touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicons/favicon.png">
+</head>
+
+
+  <body>
+    <div class="sidebar bg-cocoa px-4 py-8 text-center text-cream md:fixed md:inset-y-0 md:left-0 md:w-72 md:text-left">
+  <div class="mx-auto max-w-xl px-4 md:absolute md:inset-4">
+    <div>
+      <h1 class="mt-0 font-brand text-5xl font-normal text-cream">Tiago Padrela Amaro</h1>
+      <p class="text-xl font-light">Geek and builder</p>
+    </div>
+
+    <nav class="sidebar-nav mb-4 hidden md:block">
+      
+
+      
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-cream hover:text-gold focus:text-gold hover:underline focus:underline" href="/">About</a>
+          
+        
+      
+        
+      
+        
+          
+            <a class="block leading-loose text-cream hover:text-gold focus:text-gold hover:underline focus:underline" href="/mastodon/">Mastodon</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-cream hover:text-gold focus:text-gold hover:underline focus:underline" href="/posts/">Posts</a>
+          
+        
+      
+        
+          
+            <a class="block leading-loose text-cream hover:text-gold focus:text-gold hover:underline focus:underline" href="/quotes/">Quotes</a>
+          
+        
+      
+        
+      
+    </nav>
+
+    <p class="sidebar-copyright hidden md:block">
+      <small>
+        Hosted on <a class="text-cream hover:text-gold" href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
+      </small>
+    </p>
+
+    <a id="easter_egg" href="https://en.wikipedia.org/wiki/Doom_(1993_video_game)" class="hidden h-8 w-7" style="background-image: url(/public/images/doom_marine.gif);"></a>
+
+    <div class="mobile-menu-arrow mx-auto hidden h-4 w-4 rotate-45 cursor-pointer border-r-2 border-b-2 border-cream max-md:block"></div>
+  </div>
+</div>
+
+
+    <div class="content mx-auto max-w-full px-4 pt-16 pb-16 md:mr-8 md:ml-80 lg:mr-16 lg:ml-88">
+      <div class="mb-16">
+  <h1 class="mt-0 text-neutral-800">The "organic" way of building</h1>
+
+  <span class="-mt-2 mb-4 block text-neutral-400">24 Oct 2026</span>
+
+
+  <p>More and more videos, tweets, posts and fellow colleagues are giving up technology due to burnout. What tech should be leveraging (more time, "touching more green", etc.), is now leading us to long standing hackathons, whether we like it or not. The mythical man month likeness that we're reaching, the utopia where we can ship more, but we actually don't get more resources, only a very fast typist, our new LLM / stochastic parrot companions.</p>
+
+<p>I've never liked hackathons. Never participated once in my life, as I couldn't stand the idea of not sleeping while typing code as much as possible to achieve a goal, losing quality over quantity. We've now made this the new normal, where many are not reading a single piece of code, considering themselves post-technical due to the fact. We need to understand what's going on, while of course, reading every single line of code is impossible, there's still the consideration of accountability and knowledge as humans behind the machine.</p>
+
+<p>It's obvious we can't type as fast as a computer. LLMs can generate hundreds to thousands more lines of code based on what we've written in the past, copying and pasting elegantly, as we did before, much slower, through StackOverflow or other means. "Copy like an artist" some said, and this didn't change, just became more efficient, yet the process is dumber, as this is, in my own humble opinion, not smarter. Smarter in the way that losing accountability to a black hole that will be a black box of the unknown will simply lead to more debt, of knowledge and delegation.</p>
+
+<p>Enter the "organic" process. We should not be the "meat proxies", as our extremely specialized machine learning algorithms should be responsible to create smaller "automaton algorithms". They are flexible and competent enough (kudos to Fabio Akita, <a href="https://github.com/akitaonrails/ai-book-2026">October 2026 new book</a>), on doing exactly that: facilitating our lives to create scripts that we can reuse into actual programming and computation processes. This new technology will help us creating the tools, but building something by ourselves and knowing 100% what that is, will be the most valuable asset of the future.</p>
+
+<p>The "organic" process, is similar to "organic" food or whatever product isn't tampered with extreme refinements of a huge process. They can be smaller, degrade faster, but they are more valuable and healthier, but sometimes, they are simply worse than the processed one. They all have space. The organic is valuable and when it's very good, it's way more valuable than anything that was automatically expelled from an automated process. This can already be seen in the wild, where so many landing pages have a generic, purplish look, AI made. Slides that have too much content, without any curation at all. There's no "organicity" in the process, it's so artificial, that it's not only tasteless, but it's low quality.</p>
+
+<p>While brute force has its own space and automation is very welcome in several aspects, we should be thinking how to escape the burnout phase of this current bubble we're in. Not all of us are lucky enough to work in a healthy environment where we can experiment, see how it goes and regret decisions that we've made. For the ones who have choice, build healthier environments instead of extreme marathons where no one has knowledge. Tinker tools to help you build. Build the craft, with new and amazing tools that we now have, but think of the others that are actually going to consume it. People.</p>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES.
+     *  Docs: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    /*
+    var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+
+    var disqus_config = function () {
+        this.page.identifier = "/2026/10/24/the-organic-way-of-building/";
+    };
+
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//tiagoamaro.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+
+      <script src="https://npmcdn.com/cheet.js@0.3.3/cheet.min.js"></script>
+  <script src="/public/js/mobile_menu.js"></script>
+  <script src="/public/js/easter_egg.js"></script>
+  <script type="importmap">
+    { "imports": { "dompurify": "/public/js/emfed/dompurify.mjs" } }
+  </script>
+  <script type="module" src="/public/js/emfed/emfed.js"></script>
+
+  </body>
+</html>
