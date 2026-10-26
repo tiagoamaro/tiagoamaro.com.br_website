@@ -9,7 +9,7 @@ URLs keep Jekyll's pretty permalinks as real folders:
 - `/` (`index.html`): About page
 - `/posts/`: post index, newest first
 - `/YYYY/MM/DD/slug/index.html`: blog posts
-- `/mastodon/`, `/quotes/`: other pages
+- `/quotes/`: other page
 - `404.html`: standalone, no site CSS
 
 There are no templates. The `<head>`, sidebar and scripts are duplicated in
@@ -39,12 +39,3 @@ carry no classes, so they are styled in the `@layer base` block of
 `@layer legacy`. Every page declares `@layer theme, base, legacy, components,
 utilities;` before loading stylesheets, so legacy rules beat Preflight but
 lose to Tailwind utilities. Keep that declaration first in `<head>`.
-
-## Do not touch: third-party / vendored code
-
-`public/js/emfed/` is the vendored Mastodon feed embed
-(<https://github.com/sampsyo/emfed>): `emfed.js`, `core.js`, `client.js`,
-`toots.css` and its dependency `dompurify.mjs` (resolved via an import map in
-each page). Its classnames (`.toots`, `.toot`, `.user`, `.avatar`, etc.) are
-injected at runtime. Do not convert `toots.css` to Tailwind or edit these
-files.
