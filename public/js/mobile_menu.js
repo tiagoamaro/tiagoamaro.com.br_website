@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   menuArrow.onclick = function () {
     menuArrow.classList.toggle("rotate-45");
-    menuArrow.classList.toggle("-rotate-45");
+    menuArrow.classList.toggle("-rotate-135");
 
     sidebarItems.forEach(function (item) {
       item.classList.toggle("hidden");
